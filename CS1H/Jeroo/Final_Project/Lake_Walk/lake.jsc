@@ -1,0 +1,58 @@
+@Java
+//Preconditions: Jeroo instanciated at (0,0)
+//Author: Kenny Davis
+method findLake(){
+while(!isWater(AHEAD)){
+  hop();
+  if(isFacing(EAST)) turn(RIGHT);
+  else if(isFacing(SOUTH)) turn(LEFT);
+  }
+  while(!isWater(RIGHT))turn(LEFT);
+}
+//Preconditions: Jeroo has water to the right, and there is a flower in it's pouch.
+//Author: Aaron Dill
+method walkLake(){
+  plant();
+  //repeat until start pos is reached
+  while(!isFlower(AHEAD)){
+    if(!isWater(AHEAD))hop();
+    if(!isWater(RIGHT))turn(RIGHT);
+    if(isWater(AHEAD))turn(LEFT);
+  }
+  hop();
+}
+
+//Preconditions: Jeroo has no obstructions to the west, and there are no obstructions between the west most tile and the north most tile.
+//Author: Kenny Davis
+method goHome(){
+while(!isFacing(WEST)) turn(LEFT);
+  hopToWater();
+  turn(RIGHT);
+  hopToWater();
+  turn(RIGHT);
+}
+//Preconditions: No nets or Jeroos between Jeroo and the first water tile; 
+//Author: Kenny Davis
+method hopToWater(){
+  while(!isWater(AHEAD))hop();
+}
+@@
+/**
+ * Filename: lake.jsc
+ *  
+ * Author1:  Aaron Dill
+ * Author2:  Kenny Davis
+ * Date:     10/17/2022
+ * Course:   Computer Science I Honors
+ *  
+ * Summary of file: 
+ *   This Program demonstrates complete understanding of Jeroo by writing methods to help a Jeroo Lily to find and circumvent a lake.
+ *   Lily places a flower at the starting position of the lake and returns to home after the Flower has been reached. 
+ */
+
+method main(){
+  Jeroo lily = new Jeroo(1);
+  lily.findLake();
+  lily.walkLake();
+  lily.goHome();
+}

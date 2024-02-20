@@ -1,0 +1,77 @@
+@Java
+
+@@
+method main(){
+   Jeroo z = new Jeroo(2,5, WEST);
+  z.turn(LEFT);
+  
+  //first row down
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.turn(LEFT);
+  //horz row right
+   z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.turn(LEFT);
+  //vert row up
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.turn(LEFT);
+  //horz row left
+   z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick(); 
+  z.hop();
+  z.pick();
+  z.turn(LEFT);
+  //vert row down
+    z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick(); 
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.turn(LEFT);
+  //horz row right
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick(); 
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.turn(LEFT);
+  //vert row up
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick(); 
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+  z.hop();
+  z.pick();
+   }

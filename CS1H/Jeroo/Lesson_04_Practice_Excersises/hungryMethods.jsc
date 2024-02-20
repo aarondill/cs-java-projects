@@ -1,0 +1,77 @@
+@Java
+//Preconditions: Have Jeroo instanciated at 1,1 facing EAST
+method hungryMan(){
+  exitCave();
+  while(!isWater(AHEAD))findPickFlower();
+  turn(RIGHT);
+  hopClear();
+  turn(RIGHT);
+  while(!isWater(AHEAD))findPickFlower();
+  turnAround();
+  hopClear();
+  turn(RIGHT);
+  hopClear();
+  tossNets();
+  hop();
+  turn(LEFT);
+  findPickFlower();
+  turnAround();
+  hopClear();
+  turn(RIGHT);
+  hop(10);
+  turn(LEFT);
+  enterCave();
+}
+//Preconditions: None
+method findPickFlower(){
+  while(!isFlower(HERE)&&!isFlower(RIGHT)&&!isFlower(LEFT)&&!isNet(AHEAD)&&!isWater(AHEAD))hop();
+  if(isFlower(HERE))pick();
+  if(isFlower(LEFT)){
+    turn(LEFT); 
+    hop(); pick();
+    turnAround();
+    turn(LEFT);
+  }
+  if(isFlower(RIGHT)){
+    turn(RIGHT); 
+    hop(); pick();
+    turnAround();
+    turn(RIGHT);
+  }
+}
+//Preconditions: is at least one net ahead
+method tossNets(){ while(isNet(AHEAD)&&hasFlower()){toss();hop();}}
+//Preconditions: None
+method turnAround(){ turn(LEFT);turn(LEFT);}
+//Preconditions: None
+method hopClear(){ while(isClear(AHEAD))hop();}
+//Preconditions: Positioned on row of Cave entrance, facing West
+method enterCave(){
+  hopClear();
+  turn(RIGHT);
+  hop();
+  turn(RIGHT);
+}
+////Preconditions: Positioned at 1,1 facing EAST.
+method exitCave(){
+  while(!isNet(AHEAD)) hop(); 
+turn(RIGHT);
+hop();
+turn(LEFT);
+}
+@@
+/**
+ * Filename: hungryMethods.jsc
+ *  
+ * Author1:  Aaron Dill
+ * Author2: Kenny Davis
+ * Date:     10/11/2022
+ * Course:   Computer Science I Honors
+ *  
+ * Summary of file: 
+ *   This program demonstrates usage of Methods and sensors to refactor the hungry Man progam as laid out in lab 01
+ */
+method main() {
+  Jeroo j = new Jeroo(1,1);
+  j.hungryMan();
+  }

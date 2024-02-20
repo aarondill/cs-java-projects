@@ -1,0 +1,103 @@
+@Java
+method runProgram(){
+  while(!isWater(AHEAD)){
+	findRooms();
+  }
+  if(!isWater(LEFT)||!isWater(RIGHT))findRooms();
+}
+
+method findRooms(){
+  //hop until end or room
+  while(isWater(LEFT)&&isWater(RIGHT)&&isFlower(HERE)) hop();
+  if(!isWater(LEFT)){
+    //enter LEFT room
+    turn(LEFT);
+    hop();
+	clearNets();
+  } else if(!isWater(RIGHT)){
+    //else enter RIGHT room
+    turn(RIGHT);
+    hop();
+	clearNets();
+  }
+}
+
+method clearNets(){
+ while(!(isNet(RIGHT)||isNet(LEFT)||isNet(AHEAD))){
+   if(isClear(AHEAD))hop();
+   else if(isWater(AHEAD)){
+     if(isFacing(WEST)){
+       if(!isWater(RIGHT)){
+       turn(RIGHT);
+		hopClear(); hopClear();hopClear();
+       	turn(RIGHT);
+        }
+       else{
+         turn(LEFT);
+         while(isClear(AHEAD))hop();
+         turn(RIGHT);
+       }
+     }else if(isFacing(EAST)){
+       if(!isWater(LEFT)){
+       turn(LEFT);
+       hopClear(); hopClear();hopClear();
+       turn(LEFT);
+        }
+       else{
+         turn(RIGHT);
+         while(isClear(AHEAD))hop();
+         turn(LEFT);
+       }
+      
+     }
+   }
+ }
+ if(isNet(LEFT))turn(LEFT);
+ else if(isNet(RIGHT))turn(RIGHT);
+ toss(); 
+ findExit();
+}
+
+method hopClear(){if(!isWater(AHEAD)&&!isNet(AHEAD))hop();}
+
+method findExit(){
+  while(!isWater(AHEAD))hop();
+  turn(RIGHT);
+  while(!isClear(LEFT)&&!isFlower(HERE)){
+	if(isWater(AHEAD))turn(RIGHT);
+    else hop();
+  }
+  if(!isFlower(HERE)){
+  turn(LEFT); hop(2);
+    }
+  
+  
+  	//at exit
+    if(!isClear(AHEAD)||isFacing(EAST)){
+      //check for room across
+      if(isFacing(EAST))turn(RIGHT);
+      else if(isFacing(WEST))turn(LEFT);
+      hopClear();
+    } else{
+      //there is room across, clear it.
+        hop();
+        clearNets();
+        findExit();
+    }
+  }
+@@
+/**
+ * Filename: ClearRooms.jsc
+ *  
+ * Author1:  Aaron Dill
+ * Date:     10/17/2022
+ * Course:   Computer Science I Honors
+ *  
+ * Summary of file: 
+ * The Jeroo searches down a corridor, entering rooms and disabling the net contained within, before exiting and returning to the south end of the corridor.  
+ *
+ */
+method main(){
+  Jeroo j = new Jeroo(0,11,SOUTH,4);
+  j.runProgram();
+}

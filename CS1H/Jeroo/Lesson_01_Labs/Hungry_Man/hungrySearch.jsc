@@ -1,0 +1,102 @@
+@Java
+method turnAround(){turn(LEFT); turn(LEFT);}
+method enterCave(){
+turn(RIGHT); hop(); turn(RIGHT);
+}
+method exitCave(){
+  hop(2); turn(RIGHT); hop(); turn(LEFT); hop(2);
+}
+method hopUp(){
+  if(isFacing(EAST)){turn(LEFT); hop(); turn(RIGHT);}
+  else if(isFacing(WEST)){turn(RIGHT); hop(); turn(LEFT);}
+}
+method hopDown(){
+   if(isFacing(EAST)){turn(RIGHT); hop(); turn(LEFT);}
+   else if(isFacing(WEST)){turn(LEFT); hop(); turn(RIGHT);}
+}
+
+method hSearch(){
+  if(isFacing(EAST)){
+  while(!isWater(AHEAD)&&!isNet(AHEAD)){
+       eCheck();
+          hop();
+      }
+    eCheck();
+  	}else if(isFacing(WEST)){
+        while(!isWater(AHEAD)&&!isNet(AHEAD)){
+            wCheck();
+                hop();
+          }
+      wCheck();
+      }    
+  }
+
+
+
+method wCheck(){
+   if(isFlower(LEFT)){
+               hopDown();
+               pick();
+               hopUp();
+                }
+             if(isFlower(RIGHT)){
+               hopUp();
+               pick();
+               hopDown();
+                }
+              if(isFlower(HERE))pick();
+}
+
+
+
+method eCheck(){
+   if(isFlower(RIGHT)){
+         hopDown();
+         pick();
+         hopUp();
+          }
+       if(isFlower(LEFT)){
+         hopUp();
+         pick();
+         hopDown();
+          }
+        if(isFlower(HERE))pick();
+}
+@@
+method main(){
+   Jeroo j = new Jeroo(1,1);
+  	j.exitCave();
+  j.hopUp();
+  j.hSearch();
+  j.hopDown(); j.hopDown(); j.hopDown();
+  j.turnAround();
+  j.hSearch();
+    j.hopDown(); j.hopDown(); j.hopDown();
+  j.turnAround(); j.hSearch();
+  j.turnAround();
+  j.hSearch(); 
+  j.hopUp();j.hopUp();j.hopUp();j.turnAround();
+  j.hSearch();
+  j.hopDown(); j.hopDown(); j.turnAround(); 
+  j.hSearch();
+  j.hopDown();  
+  
+  j.hopDown();
+  j.turnAround();
+  j.hSearch();
+  j.turn(RIGHT);
+  while(j.isNet(AHEAD)){
+    j.toss();
+    j.hop();
+  }
+  j.hop(); j.hop();
+  j.turn(LEFT);
+  j.hSearch();
+  j.hopDown(); j.turnAround();
+  j.hSearch();
+  j.turn(RIGHT);
+  j.hop(11);
+  j.turn(LEFT);
+  j.hSearch();
+  j.enterCave();
+   }

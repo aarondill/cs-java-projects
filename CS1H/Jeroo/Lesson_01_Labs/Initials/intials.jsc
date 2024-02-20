@@ -1,0 +1,56 @@
+@Java
+method toWater(){
+  while(!isWater(AHEAD)){
+    hop();
+  }
+}
+method turnAround(){
+  turn(RIGHT);
+  turn(RIGHT);
+}
+
+method plant5(){
+  plant();
+  hop(); plant(); 
+  hop(); plant();
+  hop(); plant(); 
+  hop(); plant();
+  hop(); plant(); 
+}
+@@
+method main(){
+  Jeroo a = new Jeroo(14, 5, NORTH, 18);
+  Jeroo j = new Jeroo(7, 11, EAST, 15);
+  Jeroo d = new Jeroo(14,17,NORTH, 16);
+
+  a.plant5();
+  a.hop(); a.turn(RIGHT); a.hop(); a.plant();
+  a.hop(); a.turn(LEFT); a.hop(); a.plant();
+  a.turn(RIGHT); a.hop(); a.turn(RIGHT); a.hop(); a.plant();
+  a.hop(); a.turn(LEFT); a.hop(); a.turn(RIGHT);
+  a.plant5();
+  a.turnAround(); a.hop(3); a.turn(LEFT);
+  a.hop(); a.plant();
+  a.hop(); a.plant();
+  a.hop(); a.plant();
+  a.toWater();
+ 
+  j.plant(); j.hop(); j.plant(); j.hop(); j.plant(); j.hop(); j.plant(); j.hop(); j.plant(); 
+  j.turnAround(); j.hop(2); j.turn(LEFT);
+  j.plant5(); j.hop(); j.plant();
+  j.hop(); j.turn(RIGHT); j.hop();
+  j.plant();
+  j.hop(); j.turn(RIGHT); j.hop();
+  j.plant(); j.hop(); j.plant();
+  j.toWater();
+  
+  d.plant5();
+  d.hop(); d.plant(); d.hop(); d.plant();
+  d.turn(RIGHT); d.hop(); d.plant();
+  d.hop(); d.turn(RIGHT); d.hop(); d.plant();
+  d.hop(); d.turn(LEFT); d.hop(); d.plant(); d.turn(RIGHT);
+  d.hop(); d.plant(); d.hop(); d.plant(); d.hop(); d.plant();
+  d.hop(); d.turn(RIGHT); d.hop(); d.plant();
+  d.hop(); d.turn(LEFT); d.hop(); d.plant(); d.turn(RIGHT);
+  d.toWater();
+   }

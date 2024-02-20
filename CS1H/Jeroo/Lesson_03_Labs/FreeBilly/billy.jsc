@@ -1,0 +1,30 @@
+@Java
+
+@@
+/**
+ * Filename: billy.jsc
+ *  
+ * Author1:  Aaron Dill
+ * Date:     10/03/2022
+ * Course:   Computer Science I Honors
+ *  
+ * Summary of file: 
+ *   This program demonstates usage of sensors and while loops to find an exit to a cage of water which has a flower on the exit.
+ *
+ */
+method main(){
+  Jeroo billy = new Jeroo(11,6,WEST);
+  //loop to keep going	
+  while(!billy.hasFlower()){
+  //check for flower ahead
+  if(billy.isFlower(AHEAD)){
+      billy.hop();
+      billy.pick();
+  }else{
+    //hop forward while clear
+	while(billy.isClear(AHEAD))billy.hop();
+    //is water ahead turn right
+	if(billy.isWater(AHEAD)) billy.turn(RIGHT);
+   }
+ }
+}

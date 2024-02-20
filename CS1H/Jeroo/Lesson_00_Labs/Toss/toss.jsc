@@ -1,0 +1,27 @@
+@Java
+
+@@
+ method main(){
+   Jeroo j = new Jeroo();
+   //pick flowers
+   j.hop(2);
+   j.pick();
+   j.hop();
+   j.pick();
+   j.hop();
+   j.pick();
+   j.hop();
+   j.pick();
+   //toss traps
+   j.toss();
+   j.hop();
+   j.toss();
+   j.hop();
+   j.toss();
+   j.hop();
+   j.toss();
+   j.hop();
+   //final movement
+   j.turn(RIGHT);
+   j.hop(4);
+   }

@@ -1,0 +1,21 @@
+@Java
+method findExit(){
+  while(isClear(AHEAD))hop();
+  while(!isFlower(AHEAD)){
+    while(isClear(AHEAD)){
+      hop();
+      if(isClear(LEFT)&&isClear(RIGHT))turn(LEFT);
+      }
+      if(isWater(AHEAD))turn(RIGHT);
+  }
+}
+@@
+method main()
+{
+  Jeroo a = new Jeroo(8,5,SOUTH,1);
+  Jeroo b = new Jeroo(14,9,EAST,1);
+  Jeroo c = new Jeroo(6,18,NORTH,1);
+  Jeroo d = new Jeroo(22,15,WEST,1);  // won't work in Room04 move to (1,9)
+  a.findExit(); b.findExit(); 
+  c.findExit();d.findExit();
+}

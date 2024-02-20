@@ -1,0 +1,30 @@
+@Java
+method relay(){
+while(!isJeroo(AHEAD))hop();
+plant();
+while(hasFlower())give(AHEAD);
+  }
+method marchToWater(){
+  while(!isWater(AHEAD)){
+    hop();
+  }
+}
+@@
+method main(){
+  Jeroo joe = new Jeroo(2,4,EAST, 5);
+  Jeroo karl = new Jeroo(2,19,SOUTH);
+  Jeroo linda = new Jeroo(7,19,WEST);
+  Jeroo mary = new Jeroo(7,4,NORTH);
+
+  joe.relay();
+  karl.relay();
+  linda.relay();
+  while(mary.isClear(AHEAD))mary.hop();
+  mary.plant();
+  mary.toss();
+  
+  joe.marchToWater();
+  karl.marchToWater();
+  linda.marchToWater();
+  mary.marchToWater();
+}

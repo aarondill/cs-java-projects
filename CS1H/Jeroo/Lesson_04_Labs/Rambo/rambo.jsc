@@ -1,0 +1,81 @@
+@Java
+//Prerequisites: Have enough flowers combined in pouch and on island before reaching net.
+//Programed By Aaron
+method cleanRow(){
+  //picks all flowers and disables all nets on row.
+  while(!isWater(AHEAD)){
+    if(isFlower(HERE))pick();
+    if(isNet(AHEAD))toss();	
+    hopClear();	
+  }	
+  if(isFlower(HERE))pick();
+} 
+
+//Prerequisites: none
+//Programmed by: Aaron
+method hopClear(){
+	//hops if and only if it's safe to hop
+	if(!isNet(AHEAD)&&!isWater(AHEAD)&&!isJeroo(AHEAD)) hop();
+}
+
+
+//Prerequisites: Positioned on square with clear space below it.
+//Programed By Kenny
+method nextRow(){
+  //moves Rambo down a row from either side of the island.
+  if(isFacing(EAST)&&!isWater(RIGHT)){
+    turn(RIGHT);
+    hopClear();
+    turn(RIGHT);
+  } else if(isFacing(WEST)&&!isWater(LEFT)){
+    turn(LEFT);	
+    hopClear();	
+    turn(LEFT);
+  }
+  
+}
+
+//Prerequisites: 
+//Programed By Aaron
+method plantFlowers(){
+  //plants all remaining flowers all along the edge of the island.
+  if(!isClear(AHEAD))turn(RIGHT);
+  if(!isFlower(HERE))plant();
+  hop();
+  if(isFlower(LEFT))turn(RIGHT);
+}
+@@
+/**
+ * Filename: rambo.jsc
+ *  
+ * Author1:  Aaron Dill
+ * Author2:  Kenny Davis
+ * Date:     10/13/2022
+ * Course:   Computer Science I Honors
+ *  
+ * Summary of file:
+ *   This program removes all flowers, disables all nets, and plants any flowers still held by the Jeroo around the edge of the island.
+ *   This is achieved with Methods for each task.
+*/
+// DO NOT MODIFY THE CODE SHOWN BELOW, ALL UPDATES ARE TO THE JEROO METHIDS
+method main() {
+  Jeroo rambo = new Jeroo (0,0,EAST, 9);
+  
+  //while Jeroo has not reached the SouthWest corner
+  while(!(rambo.isFacing(WEST) &&
+  		  rambo.isWater(LEFT) &&
+		  rambo.isWater(AHEAD)))
+  {
+    //picks all flowers and disables all nets on row
+    rambo.cleanRow();
+    
+    //moves safely down to the next row
+    rambo.nextRow();
+    
+  }
+  
+  //after island has been cleaned, rambo plants flowers around the border of the island
+  while(rambo.hasFlower())
+    rambo.plantFlowers(); 
+  
+}

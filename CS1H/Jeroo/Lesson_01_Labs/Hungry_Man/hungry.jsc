@@ -1,0 +1,32 @@
+@Java
+
+@@
+method main(){
+   Jeroo bob = new Jeroo(1,1);
+  	bob.turn(RIGHT); bob.hop(); bob.turn(LEFT);
+  	bob.hop(12); bob.pick();
+  	bob.turn(LEFT); bob.hop(); bob.turn(LEFT); 
+  	bob.hop(5); bob.pick();
+  	bob.hop(); bob.turn(LEFT);
+  	bob.hop(7); bob.pick();
+  	bob.turn(RIGHT); bob.hop(5); bob.turn(RIGHT);
+  	bob.hop(); bob.pick();
+  	bob.turn(RIGHT); bob.hop(11); bob.turn(RIGHT);
+  	bob.hop();
+  while(bob.isNet(AHEAD)){
+    bob.toss(); bob.hop();
+  }
+  	bob.hop(2);
+  	bob.turn(LEFT);
+  	bob.hop(3);
+  	bob.pick();
+  	bob.turn(LEFT);bob.turn(LEFT);
+  	bob.hop(3);
+  	bob.turn(RIGHT);
+  	bob.hop(10);
+  	bob.turn(LEFT);
+  	bob.hop(12);
+  	bob.turn(RIGHT);
+  	bob.hop();
+  	bob.turn(RIGHT);
+   }

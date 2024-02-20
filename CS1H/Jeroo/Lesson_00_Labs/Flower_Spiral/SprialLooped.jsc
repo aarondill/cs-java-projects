@@ -1,0 +1,15 @@
+@Java
+
+@@
+method main(){
+  Jeroo j = new Jeroo(2,5, WEST);
+  j.turn(LEFT);
+  while(j.isFlower(AHEAD)){
+  	while(j.isFlower(AHEAD)){
+    	j.hop();
+    	j.pick();
+  	}
+   j.turn(LEFT);
+  }
+  j.turn(RIGHT);
+  }

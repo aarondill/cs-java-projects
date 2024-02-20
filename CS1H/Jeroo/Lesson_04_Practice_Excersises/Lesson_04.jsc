@@ -1,0 +1,122 @@
+@Java
+//Q1 Write a method called giveAllFlowers() that will allow the 
+//   Jeroo to give all its flowers to another Jeroo it is facing.
+method giveAllFlowers(){
+  if(isJeroo(AHEAD)) while(hasFlower()) give(AHEAD);
+}
+
+//Q2 Write a method called followCoastRight() that will allow a 
+//   Jeroo to hop safely along a straight coastline of water, 
+//   stopping when it is no longer safe to go straight. Any flowers 
+//   along the path will be ignored.
+method followCoastRight(){
+while(!isNet(AHEAD)&&!isWater(AHEAD)&&!isJeroo(AHEAD))hop();
+}
+
+//Q3 Write a method that will cause a Jeroo to safely hop forward 
+//   until it finds a flower on its right, pick that flower, and 
+//   then be ready to continue on its original path in the original 
+//   direction. If for some reason it cannot find a flower and 
+//   encounters any other object in its path, it is to stop.
+method findFlowerRightPick(){
+while(isClear(AHEAD)&&!isFlower(RIGHT))hop();
+  if(isFlower(RIGHT)){
+    turn(RIGHT);
+    hop();
+    pick();
+    turn(RIGHT); turn(RIGHT);
+    hop();
+    turn(RIGHT);
+  }
+}
+
+//Q4a Write a method called pickFlowers() that will cause a Jeroo to 
+//    pick any flowers where it is standing, as well as on either side 
+//    of its current location.
+method pickFlowers(){
+ if(isFlower(HERE))pick();
+ if(isFlower(LEFT)){
+   turn(LEFT);
+   hop(); pick();
+   turn(LEFT); turn(LEFT);
+   hop();
+   turn(LEFT);
+  }
+ if(isFlower(RIGHT)){
+   turn(RIGHT);
+   hop(); pick();
+   turn(LEFT); turn(LEFT);
+   hop();
+   turn(RIGHT);
+  }
+}
+
+//Q4b Write another method called clearNets() that will cause a Jeroo, 
+//    if it has enough flowers, to disable all nets it can sense around 
+//    it, the ones on either side of it first, and then one in front, 
+//    hopping forward when it is safe.
+//    Hint: Once the Jeroo hops forward, call the pickFlowers() method.
+method clearNets(){
+  if(hasFlower()){
+   if(isNet(LEFT)){
+     turn(LEFT);
+     toss();
+     turn(RIGHT);
+     }
+ if(isNet(RIGHT)){
+     turn(RIGHT);
+     toss();
+     turn(LEFT);
+   }
+    if(isNet(AHEAD)) toss();
+  }  
+  if(!isNet(AHEAD)&&!isWater(AHEAD)&&!isJeroo(AHEAD)) hop();
+  pickFlowers();
+}
+//Q4c Finally write method called clearCorridor() that will cause a Jeroo 
+//    to clear a corridor of flowers and nets until it reaches water, but 
+//    only if it has enough flowers to do the job, otherwise it is to stop 
+//    where it is. A corridor is defined as the forward path the Jeroo is on, 
+//    as well as the row to the left of it and the row to the right.
+//    Hint: Call the pickFlowers() method before you move.
+method clearCorridor(){
+  pickFlowers();
+  while(hasFlower()&&!isWater(AHEAD)&&!isJeroo(AHEAD)){
+  pickFlowers();
+  clearNets();
+    }
+  while(isClear(AHEAD))hop();
+}
+@@
+/**
+ * Filename: JerooLesson04.jsc
+ *  
+ * Author1:  Aaron Dill
+ * Date:     10/11/2022
+ * Course:   Computer Science I Honors
+ *  
+ * Summary of file: 
+ *   This program demonstrates usage of Methods and sensors to complete a variety of challenges outlaid by the professor.
+ */
+method main(){
+  
+  Jeroo luke = new Jeroo(3,0,SOUTH,12);
+  Jeroo leia = new Jeroo(4,0,SOUTH);
+  Jeroo han = new Jeroo(20,8,NORTH);
+  Jeroo vader = new Jeroo(20,15,NORTH);
+  
+  // Practice Exercise #1
+  luke.giveAllFlowers();
+  
+  // Practice Exercise #2  
+  leia.followCoastRight();
+  
+  // Practice Exercise #3
+  luke.turn(LEFT);
+  luke.findFlowerRightPick();
+  
+  // Practice Exercise #4
+  han.clearCorridor();
+  vader.clearCorridor();
+  
+}

@@ -1,0 +1,30 @@
+@Java
+
+@@
+method main(){
+   Jeroo k = new Jeroo(3,6, NORTH);
+  k.hop(3);
+  k.turn(RIGHT);
+  //top right
+  k.hop(6);
+  k.pick();
+  k.turn(RIGHT);
+  //bottom right
+  k.hop(6);
+  k.pick();
+  k.turn(RIGHT);
+  //bottom left
+  k.hop(12);
+  k.pick();
+  k.turn(RIGHT);
+  //top left
+  k.hop(6);
+  k.pick();
+  k.turn(RIGHT);
+  //return original
+  k.hop(6);
+  k.turn(RIGHT);
+  k.hop(3);
+  k.turn(RIGHT);
+  k.turn(RIGHT);
+   }

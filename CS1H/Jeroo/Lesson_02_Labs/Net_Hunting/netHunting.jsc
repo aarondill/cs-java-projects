@@ -1,0 +1,113 @@
+/**
+ * Filename: netHunting.jsc
+ *  
+ * Author1:  Aaron Dill
+ * Date:     9/27/2022
+ * Course:   Computer Science I Honors
+ *  
+ * Summary of file: 
+ *		This program runs around the outer edge of the island and picks up flowers and disables nets respectivly if applicable.   
+ *
+ */ 
+
+method main(){
+  Jeroo josie = new Jeroo (9, 13, NORTH, 0);
+    //right side of island
+  while(josie.isClear(AHEAD)){
+    //check for flower on left and pick it if one is there
+    if(josie.isFlower(LEFT)){
+      //collect flower
+      josie.turn(LEFT);
+      josie.hop(1);
+      josie.pick();
+      //turn around and return to prev. position
+      josie.turn(RIGHT);
+      josie.turn(RIGHT);
+      josie.hop(1);
+      josie.turn(LEFT);
+    }else if(josie.hasFlower() && josie.isNet(LEFT)){ //check for net on left and disable it if one is there(short circut if not hasFlower)
+        josie.turn(LEFT);
+        josie.toss();
+        josie.turn(RIGHT);
+      }
+    //hop forward after each set of checks
+    josie.hop();
+  }//end of while loop
+  //turn left before starting next loop
+  josie.turn(LEFT);
+  
+  
+  //top side of island
+  while(josie.isClear(AHEAD)){
+    //check for flower on left and pick it if one is there
+    if(josie.isFlower(LEFT)){
+      //collect flower
+      josie.turn(LEFT);
+      josie.hop(1);
+      josie.pick();
+      //turn around and return to prev. position
+      josie.turn(RIGHT);
+      josie.turn(RIGHT);
+      josie.hop(1);
+      josie.turn(LEFT);
+    }else if(josie.hasFlower() && josie.isNet(LEFT)){ //check for net on left and disable it if one is there(short circut if not hasFlower)
+        josie.turn(LEFT);
+        josie.toss();
+        josie.turn(RIGHT);
+      }
+    //hop forward after each set of checks
+    josie.hop();
+  }//end of while loop
+  //turn left before starting next loop
+  josie.turn(LEFT);
+  
+  
+  //left side of island
+  while(josie.isClear(AHEAD)){
+    //check for flower on left and pick it if one is there
+    if(josie.isFlower(LEFT)){
+      //collect flower
+      josie.turn(LEFT);
+      josie.hop(1);
+      josie.pick();
+      //turn around and return to prev. position
+      josie.turn(RIGHT);
+      josie.turn(RIGHT);
+      josie.hop(1);
+      josie.turn(LEFT);
+    }else if(josie.hasFlower() && josie.isNet(LEFT)){ //check for net on left and disable it if one is there(short circut if not hasFlower)
+        josie.turn(LEFT);
+        josie.toss();
+        josie.turn(RIGHT);
+      }
+    //hop forward after each set of checks
+    josie.hop();
+  }//end of while loop
+  //turn left before starting next loop
+  josie.turn(LEFT);
+  
+  
+  //bottom side of island
+  while(josie.isClear(AHEAD)){
+    //check for flower on left and pick it if one is there
+    if(josie.isFlower(LEFT)){
+      //collect flower
+      josie.turn(LEFT);
+      josie.hop(1);
+      josie.pick();
+      //turn around and return to prev. position
+      josie.turn(RIGHT);
+      josie.turn(RIGHT);
+      josie.hop(1);
+      josie.turn(LEFT);
+    }else if(josie.hasFlower() && josie.isNet(LEFT)){ //check for net on left and disable it if one is there(short circut if not hasFlower)
+        josie.turn(LEFT);
+        josie.toss();
+        josie.turn(RIGHT);
+      }
+    //hop forward after each set of checks
+    josie.hop();
+  }//end of while loop
+  //turn left to return to starting position
+  josie.turn(LEFT);
+}//end of program

@@ -1,0 +1,4 @@
+{
+  "java.format.settings.url": "~/code/Java/java-format.xml",
+  "java.debug.settings.onBuildFailureProceed": true
+}

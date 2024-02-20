@@ -1,0 +1,43 @@
+@Java
+method findNet(){
+  //ensure position in topLeft(or infront of net)
+  while(!isFacing(NORTH))turn(RIGHT);
+  while(isClear(AHEAD))hop();
+  disableNet();
+  turn(LEFT);
+  while(isClear(AHEAD))hop();
+  //is in top left
+  while(hasFlower()){//repeat until hasTossed
+    turn(LEFT);hop();turn(LEFT);
+    moveFoward();//search west facing rows
+      if(hasFlower()){
+   		 turn(RIGHT); hop(2); turn(RIGHT);
+    	 moveFoward(); //search east facing rows 
+        }
+    }
+}
+method disableNet(){
+  if(isNet(AHEAD))toss();
+  if(isNet(LEFT)){turn(LEFT);toss();}
+  if(isNet(RIGHT)){turn(RIGHT);toss();}
+}
+method moveFoward(){
+    while(!isNet(LEFT) && !isNet(RIGHT) && isClear(AHEAD))hop();
+   if(isFlower(AHEAD)){
+      turn(LEFT);turn(LEFT);hop();turn(LEFT);turn(LEFT);
+    }//if in exit, leave exit and facing exit;
+    disableNet();
+}
+@@
+method main()
+{
+  Jeroo a = new Jeroo(8,5,SOUTH,1);
+  Jeroo b = new Jeroo(14,9,EAST,1);
+  Jeroo c = new Jeroo(6,18,NORTH,1);
+  Jeroo d = new Jeroo(22,15,WEST,1);  // won't work in Room04 move to (1,9)
+  a.findNet();
+  b.findNet();
+  c.findNet();
+  d.findNet();
+ 
+}

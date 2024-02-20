@@ -1,0 +1,28 @@
+@Java
+method findRooms(){
+  while(!isWater(AHEAD)){
+    if(isClear(LEFT)){
+      turn(LEFT);
+      plantAndLeave();
+      turn(LEFT);
+    }
+    if(isClear(RIGHT)){
+      turn(RIGHT);
+      plantAndLeave();
+      turn(RIGHT);
+    }
+   hop();
+  }
+}
+method plantAndLeave(){
+  	hop();
+	plant();
+    turn(LEFT); turn(LEFT);
+    hop();
+}
+@@
+method main()
+{
+  Jeroo j = new Jeroo(0,11,SOUTH,4);
+  j.findRooms();
+}
