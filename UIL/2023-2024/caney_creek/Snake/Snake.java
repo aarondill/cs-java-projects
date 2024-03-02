@@ -1,92 +1,45 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
-enum Space {
-  Food, Empty
-}
-
 public class Snake {
-  public static int x;
-  public static int y;
   public static final int WIDTH = 15;
   public static final int HEIGHT = 15;
-  static List<List<Space>> board = new ArrayList<>();
-
-  static String direction = null;
-  static int eaten = 0;
-
-  private static void move(String m) {
-    switch (m) {
-      case "U":
-        y++;
-        break;
-      case "D":
-        y--;
-        break;
-      case "L":
-        x--;
-        break;
-      case "R":
-        x++;
-        break;
-      case "O":
-        Objects.requireNonNull(direction, "Can't continue without direction!");
-        move(direction);
-        return;
-    }
-    direction = m;
-    if (board.get(y).get(x) == Space.Food) {
-      eaten++;
-      board.get(y).set(x, Space.Empty);
-    }
-  }
+  public static final int SNAKE_LEN = 3;
 
   public static void main(String... args) {
+    List<String> moves = new ArrayList<>(), lines = new ArrayList<>();
     try (Scanner dataScanner = new Scanner(Snake.class.getResourceAsStream("./snake.dat"))) {
-      for (int y = 0; y < HEIGHT; y++) {
-        char[] spaces = dataScanner.nextLine().toCharArray();
-        List<Space> row = new ArrayList<>();
-        board.add(row);
-        int snakeLen = 0;
-        for (int x = 0; x < spaces.length; x++) {
-          char space = spaces[x];
-          if (space == 'X') {
-            snakeLen++;
-            if (snakeLen == 3) {
-              Snake.x = x;
-              Snake.y = y;
-            }
-            row.add(Space.Empty);
-          } else if (space == 'F') {
-            row.add(Space.Food);
-          } else {
-            row.add(Space.Empty);
-          }
-
-        }
-      }
-      int moveLines = dataScanner.nextInt();
-      dataScanner.nextLine();
-      int xSaved = x, ySaved = y;
-      for (int i = 0; i < moveLines; i++) {
-        x = xSaved;
-        y = ySaved;
-        eaten = 0;
-        direction = null;
-
-        String line = dataScanner.nextLine();
-        try {
-          Arrays.stream(line.split("")).filter(s -> s.length() > 0).forEach(Snake::move);
-        } catch (java.lang.IndexOutOfBoundsException e) {
-          System.out.println("GAME OVER!");
-          continue;
-        }
-        System.out.println(eaten + " pellets");
-      }
+      for (int y = 0; y < HEIGHT; y++)
+        lines.add(dataScanner.nextLine());
+      int moveLines = Integer.parseInt(dataScanner.nextLine());
+      for (int i = 0; i < moveLines; i++)
+        moves.add(dataScanner.nextLine());
     }
 
+    Board<Space> b = new Board<>(WIDTH, HEIGHT);
+    int snakeX = -1, snakeY = -1;
+    for (int y = 0; y < HEIGHT; y++) {
+      int snakeLen = 0; // Note: Snake can only begin horizontally
+      Space[] spaces = Space.parse(lines.get(y));
+      for (int x = 0; x < WIDTH; x++) {
+        b.add(x, switch (spaces[x]) {
+          case Snake -> {
+            if (++snakeLen == SNAKE_LEN) {
+              snakeX = x;
+              snakeY = y;
+            }
+            yield Space.Empty;
+          }
+          default -> spaces[x];
+        });
+      }
+    }
+    for (String move : moves) {
+      SnakeImpl snake = new SnakeImpl(snakeX, snakeY, b);
+      String status = snake.move(Direction.parse(move)) ? snake.eaten + " pellets" : "GAME OVER!";
+      System.out.println(status);
+    }
   }
+
 }
