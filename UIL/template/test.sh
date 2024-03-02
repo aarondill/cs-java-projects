@@ -222,7 +222,7 @@ while [ -n "$do" ]; do
     for f in "${cleanup_files[@]}"; do # Resolve all the files from output_dir
       abs_cleanup+=("$(resolve "$f" "$output_dir")")
     done
-    [ "${#abs_cleanup[@]}" -eq 0 ] || verbose rm -f "${abs_cleanup[@]}"
+    [ "${#abs_cleanup[@]}" -eq 0 ] || verbose rm -rf "${abs_cleanup[@]}"
     ;;
   '') abort "Empty command! This is a bug!" 3 ;;
   *) abort "Unrecognized command: $command" 3 ;;
