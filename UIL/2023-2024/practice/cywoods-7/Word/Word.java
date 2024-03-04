@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Word {
@@ -9,8 +11,12 @@ public class Word {
 
   private static void each(Scanner scan) {
     // Parse the input:
-    scan.nextLine();
+    int wordCount = Integer.parseInt(scan.nextLine(), 10);
+    List<String> words = new ArrayList<>(wordCount);
+    for (int i = 0; i < wordCount; i++)
+      words.add(scan.nextLine());
     // Handle output:
+    System.out.println(words.stream().map(String::toLowerCase).filter(s -> s.contains("christmas")).count());
   }
 
   public static void main(String... args) throws FileNotFoundException {
