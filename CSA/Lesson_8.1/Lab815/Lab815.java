@@ -21,20 +21,20 @@
 public class Lab815 {
   public static void main(String... args) {
     //code to define an initially empty String 2D array
-    String[][] foods = new String[4][3];
+    String[][] foods = new String[3][4];
     //code to output all original values
     System.out.println(foods[0][0]);
     System.out.println(foods[0][1]);
     System.out.println(foods[0][2]);
+    System.out.println(foods[0][3]);
     System.out.println(foods[1][0]);
     System.out.println(foods[1][1]);
     System.out.println(foods[1][2]);
+    System.out.println(foods[1][3]);
     System.out.println(foods[2][0]);
     System.out.println(foods[2][1]);
     System.out.println(foods[2][2]);
-    System.out.println(foods[3][0]);
-    System.out.println(foods[3][1]);
-    System.out.println(foods[3][2]);
+    System.out.println(foods[2][3]);
 
     //code to change half the values to foods you like
     //and the other half to foods you don't like
@@ -42,17 +42,17 @@ public class Lab815 {
     foods[0][0] = "lasagna";
     foods[0][1] = "pizza";
     foods[0][2] = "hamburger";
-    foods[1][0] = "spaghetti";
-    foods[1][1] = "pasta";
-    foods[1][2] = "chicken";
+    foods[0][3] = "spaghetti";
+    foods[1][0] = "pasta";
+    foods[1][1] = "chicken";
 
     //foods I don't like
-    foods[2][0] = "brussel sprouts";
-    foods[2][1] = "pork";
-    foods[2][2] = "mustard";
-    foods[3][0] = "coleslaw";
-    foods[3][1] = "cooked spinach";
-    foods[3][2] = "black licorice";
+    foods[1][2] = "brussel sprouts";
+    foods[1][3] = "pork";
+    foods[2][0] = "mustard";
+    foods[2][1] = "coleslaw";
+    foods[2][2] = "cooked spinach";
+    foods[2][3] = "black licorice";
 
     //code to output a blank line separating output sets
     System.out.println();
@@ -60,14 +60,14 @@ public class Lab815 {
     System.out.println(foods[0][0]);
     System.out.println(foods[0][1]);
     System.out.println(foods[0][2]);
+    System.out.println(foods[0][3]);
     System.out.println(foods[1][0]);
     System.out.println(foods[1][1]);
     System.out.println(foods[1][2]);
+    System.out.println(foods[1][3]);
     System.out.println(foods[2][0]);
     System.out.println(foods[2][1]);
     System.out.println(foods[2][2]);
-    System.out.println(foods[3][0]);
-    System.out.println(foods[3][1]);
-    System.out.println(foods[3][2]);
+    System.out.println(foods[2][3]);
   }
 }
