@@ -16,11 +16,15 @@ import java.util.Objects;
 
 public class Traversals {
 
+  private static void output(String x) {
+    System.out.printf("%4s", x);
+  }
+
   public static void rowMajorTraversalNested(int[][] grid) {
     if (grid == null) return;
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++)
-        System.out.print(grid[r][c] + " ");
+        output(grid[r][c] + " ");
       System.out.println();
 
     }
@@ -30,7 +34,7 @@ public class Traversals {
     if (grid == null) return;
     for (int c = 0; c < grid[0].length; c++) {
       for (int r = 0; r < grid.length; r++)
-        System.out.print(grid[r][c] + " ");
+        output(grid[r][c] + " ");
       System.out.println();
     }
   }
@@ -39,7 +43,7 @@ public class Traversals {
     if (grid == null) return;
     for (int[] row : grid) {
       for (int x : row)
-        System.out.print(x + " ");
+        output(x + " ");
       System.out.println();
     }
   }
@@ -104,6 +108,18 @@ public class Traversals {
       if (n <= 0) return false;
     }
     return true;
+  }
+
+  public static int maxGrid(int[][] grid) {
+    if (grid == null) return -999;
+    if (grid.length == 0 || grid[0].length == 0) return -999;
+    int max = grid[0][0];
+    for (int r = 0; r < grid.length; r++) {
+      for (int c = 0; c < grid[r].length; c++) {
+        if (grid[r][c] > max) max = grid[r][c];
+      }
+    }
+    return max;
   }
 
 }

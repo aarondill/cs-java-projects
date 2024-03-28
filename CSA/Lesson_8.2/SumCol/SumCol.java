@@ -23,6 +23,8 @@ public class SumCol {
       for (int r = 0; r < R; r++)
         for (int c = 0; c < C; c++)
           grid[r][c] = f.nextInt();
+      Traversals.rowMajorTraversalNested(grid);
+      System.out.println();
       int col = 0;
       try (Scanner input = new Scanner(System.in)) {
         do {
@@ -31,7 +33,6 @@ public class SumCol {
           if (col < 0 || col >= C) System.out.println("Invalid column number. Try again.");
         } while (col < 0 || col >= C);
       }
-      Traversals.rowMajorTraversalNested(grid);
       System.out.println();
       System.out.printf("The sum of the values in column %d is %d\n", col, Traversals.sumCol(grid, col));
     }

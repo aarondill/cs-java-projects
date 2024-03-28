@@ -16,11 +16,15 @@ import java.util.Objects;
 
 public class Traversals {
 
+  private static void output(String x) {
+    System.out.printf("%4s", x);
+  }
+
   public static void rowMajorTraversalNested(int[][] grid) {
     if (grid == null) return;
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++)
-        System.out.print(grid[r][c] + " ");
+        output(grid[r][c] + " ");
       System.out.println();
 
     }
@@ -30,7 +34,7 @@ public class Traversals {
     if (grid == null) return;
     for (int c = 0; c < grid[0].length; c++) {
       for (int r = 0; r < grid.length; r++)
-        System.out.print(grid[r][c] + " ");
+        output(grid[r][c] + " ");
       System.out.println();
     }
   }
@@ -39,7 +43,7 @@ public class Traversals {
     if (grid == null) return;
     for (int[] row : grid) {
       for (int x : row)
-        System.out.print(x + " ");
+        output(x + " ");
       System.out.println();
     }
   }
