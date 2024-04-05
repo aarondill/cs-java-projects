@@ -7,7 +7,7 @@ public class Ricardo {
   private static int caseNum = 1;
   private static final String INPUT_FILE = "ricardo.dat";
 
-  private static int rec(String workout) {
+  private static double rec(String workout) {
     if (workout.length() == 0) return 0;
     if (workout.charAt(0) != '(') return 1;
     if (workout.charAt(workout.length() - 1) != ')') throw new IllegalArgumentException(workout);
@@ -31,15 +31,12 @@ public class Ricardo {
     children.replaceAll(String::trim);
 
     var nums = children.stream().map(Ricardo::rec).toList();
-    if (type == ',') return nums.stream().reduce(1, (a, b) -> a * b);
-    return nums.stream().reduce(0, (a, b) -> a + b);
+    if (type == ',') return nums.stream().reduce(1.0, (a, b) -> a * b);
+    return nums.stream().reduce(0.0, (a, b) -> a + b);
   }
 
   private static void each(Scanner scan) {
-    // Parse the input:
-    System.out.printf("Case #%d: %d\n", caseNum, rec(scan.nextLine()));
-
-    // Handle output:
+    System.out.printf("Case #%d: %.0f\n", caseNum, rec(scan.nextLine()));
   }
 
   public static void main(String... args) throws FileNotFoundException {
