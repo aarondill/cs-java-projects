@@ -10,107 +10,120 @@ public class Michal {
   private static int caseNum = 1;
   private static final String INPUT_FILE = "michal.dat";
 
+  private static String digit(int d) {
+    return switch (d) {
+      case 0 -> """
+          ***
+           _
+          | |
+          |_|
+
+          ***
+          """;
+      case 1 -> """
+          ***
+
+            |
+            |
+
+          ***
+          """;
+      case 2 -> """
+          ***
+           _
+           _|
+          |_
+
+          ***
+          """;
+      case 3 -> """
+          ***
+           _
+           _|
+           _|
+
+          ***
+          """;
+      case 4 -> """
+          ***
+
+          |_|
+            |
+
+          ***
+          """;
+      case 5 -> """
+          ***
+           _
+          |_
+           _|
+
+          ***
+          """;
+      case 6 -> """
+          ***
+           _
+          |_
+          |_|
+
+          ***
+          """;
+      case 7 -> """
+          ***
+           _
+            |
+            |
+
+          ***
+          """;
+      case 8 -> """
+          ***
+           _
+          |_|
+          |_|
+
+          ***
+          """;
+      case 9 -> """
+          ***
+           _
+          |_|
+           _|
+
+          ***
+          """;
+      default -> throw new IllegalArgumentException("Invalid digit: " + d);
+    };
+  }
+
+  // Height is constant (6)
+  private static void add(List<List<String>> output, String input) {
+    String[] lines = input.split("\n");
+    int width = 0;
+    for (String line : lines)
+      width = Math.max(width, line.length());
+    for (int i = 0; i < 6; i++) {
+      String line = i < lines.length ? lines[i] : " ";
+      String spacing = " ".repeat(width - line.length());
+      output.get(i).add(line + spacing);
+    }
+  }
+
   private static void each(Scanner scan) {
     // Parse the input:
     int[] nums = Stream.of(scan.nextLine().split("")).mapToInt(Integer::parseInt).toArray();
     // Handle output:
     List<List<String>> output = new ArrayList<>();
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 6; i++)
       output.add(new ArrayList<>());
-      var row = output.get(i);
-      if (i % 2 == 0) row.add("*");
-      else row.add(" ");
-    }
+    add(output, "*\n".repeat(6));
 
-    for (int n : nums) {
-      output.get(0).add("***");
-      output.get(1).add("   ");
-      output.get(2).add("   ");
-      output.get(8).add("   ");
-      output.get(9).add("   ");
-      output.get(10).add("***");
-      switch (n) {
-        case 0:
-          output.get(3).add(" - ");
-          output.get(4).add("| |");
-          output.get(5).add("   ");
-          output.get(6).add("| |");
-          output.get(7).add(" - ");
-          break;
-        case 1:
-          output.get(3).add("   ");
-          output.get(4).add("  |");
-          output.get(5).add("   ");
-          output.get(6).add("  |");
-          output.get(7).add("   ");
-          break;
-        case 2:
-          output.get(3).add(" - ");
-          output.get(4).add("  |");
-          output.get(5).add(" - ");
-          output.get(6).add("|  ");
-          output.get(7).add(" - ");
-          break;
-        case 3:
-          output.get(3).add(" - ");
-          output.get(4).add("  |");
-          output.get(5).add(" - ");
-          output.get(6).add("  |");
-          output.get(7).add(" - ");
-          break;
-        case 4:
-          output.get(3).add("   ");
-          output.get(4).add("| |");
-          output.get(5).add(" - ");
-          output.get(6).add("  |");
-          output.get(7).add("   ");
-          break;
-        case 5:
-          output.get(3).add(" - ");
-          output.get(4).add("|  ");
-          output.get(5).add(" - ");
-          output.get(6).add("  |");
-          output.get(7).add(" - ");
-          break;
-        case 6:
-          output.get(3).add(" - ");
-          output.get(4).add("|  ");
-          output.get(5).add(" - ");
-          output.get(6).add("| |");
-          output.get(7).add(" - ");
-          break;
-        case 7:
-          output.get(3).add(" - ");
-          output.get(4).add("  |");
-          output.get(5).add("   ");
-          output.get(6).add("  |");
-          output.get(7).add("   ");
-          break;
-        case 8:
-          output.get(3).add(" - ");
-          output.get(4).add("| |");
-          output.get(5).add(" - ");
-          output.get(6).add("| |");
-          output.get(7).add(" - ");
-          break;
-        case 9:
-          output.get(3).add(" - ");
-          output.get(4).add("| |");
-          output.get(5).add(" - ");
-          output.get(6).add("  |");
-          output.get(7).add("   ");
-          break;
-      }
-    }
-    for (int i = 0; i < 11; i++) {
-      var row = output.get(i);
-      if (i % 2 == 0) row.add("*");
-      else row.add(" ");
-    }
-    for (var row : output) {
+    for (int n : nums)
+      add(output, digit(n));
+
+    add(output, "*\n".repeat(6));
+    for (var row : output)
       System.out.println(String.join("", row));
-    }
-
   }
 
   public static void main(String... args) throws FileNotFoundException {
