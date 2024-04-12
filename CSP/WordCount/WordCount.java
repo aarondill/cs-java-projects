@@ -7,11 +7,10 @@ public class WordCount {
   static final char[] VOWELS = {'a', 'e', 'i', 'o', 'u'};
 
   /**
-   * Process the input list of chars and return the number of words, lines,
-   * vowels and consonants in the input.
+   * Process the input list of chars and return the number of words, lines, vowels
+   * and consonants in the input.
    *
-   * @return [words, lines, vowels, consonants, alphanumeric,
-   *         non-alphanumeric]
+   * @return [words, lines, vowels, consonants, alphanumeric, non-alphanumeric]
    *
    *         <pre>
    * Words is the number of chars sequences surrounded by whitespace.
@@ -24,28 +23,22 @@ public class WordCount {
    *         </pre>
    */
   public static int[] process(List<Character> input) {
-    // State counters
     int words = 0, lines = 0, vowels = 0, consonants = 0;
     int alphanumeric = 0, nonAlphanumeric = 0;
-    // Loop each char in the input list
     for (char c : input) {
       if (c == '\n') lines++;
 
       if (Character.isWhitespace(c)) words++;
       else if (Character.isLetterOrDigit(c)) {
         alphanumeric++;
-        // Only letters are vowels or consonants
         if (Character.isLetter(c)) {
-          // Check if VOWELS contains the char
           if (Arrays.binarySearch(VOWELS, Character.toLowerCase(c)) >= 0) {
             vowels++;
           } else consonants++;
         }
       } else nonAlphanumeric++;
     }
-    // Return processed data.
-    return new int[] {words, lines, vowels, consonants, //
-        alphanumeric, nonAlphanumeric};
+    return new int[] {words, lines, vowels, consonants, alphanumeric, nonAlphanumeric};
   }
 
   public static void main(String... args) {
@@ -55,28 +48,19 @@ public class WordCount {
         Type DONE on it's own line or close input with CTRL+D to exit.
         Enter a string to be counted:
         """);
-    // Create the list of chars to process
-    List<Character> chars = new ArrayList<>();
 
-    // Then fill the list with the input chars
+    List<Character> chars = new ArrayList<>();
     try (Scanner scan = new Scanner(System.in)) {
-      // If no more input, then assume done (avoid error)
       while (scan.hasNextLine()) {
         String line = scan.nextLine();
-        // If user has inputed DONE on it's own line, we're done
         if (line.equals("DONE")) break;
-        // Add each char to the list
         for (char c : line.toCharArray())
           chars.add(c);
-        // Insert the missing newline char that scan.nextLine removes
         chars.add('\n');
       }
     }
 
-    // Then pass the list to the process method
     int[] res = process(chars);
-
-    // Process output - order matters!
     String[] headers = {"Words", "Lines", "Vowels", "Consonants", //
         "Alphanumeric", "Non-Alphanumeric"};
     String[] output = new String[headers.length];
