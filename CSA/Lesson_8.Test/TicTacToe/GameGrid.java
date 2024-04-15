@@ -1,26 +1,26 @@
 /**
  * class GameGrid
- *  
+ *
  * Author:  Aaron Dill
  * Date:    4/5/2024
  * Course:  Computer Science I AP
- *  
+ *
  * Summary of file:
  *   Handle state of TicTacToe board
  */
 public class GameGrid {
-	
-	/** 
+
+	/**
    * Field named grid initialized to all spaces.
    * Valid values are: "X", "O", or null;
    * TODO: Change String to an Enum
    * Note: hard coded to 3x3
    */
 	private String[][] grid = new String[3][3];
-   	
+
 	/** Default constructor. */
 	public GameGrid(){}
-	
+
 	/**
 	 * @param x true if player1 false if player2
 	 * @param r row
@@ -31,19 +31,19 @@ public class GameGrid {
 	public void play(boolean x, int r, int c) {
       grid[r][c] = x ? "X" : "O";
 	}
-	
+
 	/**
 	 * @return true if the current game state results in a winner.
 	 */
 	public boolean winner() {
       // Check rows
-      outerRow: 
+      outerRow:
       for (String[] row : grid){
         for (String pos : row)
          if (pos == null || !pos.equals(row[0])) continue outerRow;
         return true; // if the previous for-loop terminated, all positions on this row are the same.
       }
-      
+
       // Check cols - note: requires a square array
       outerCol:
       for(int i = 0; i < grid[0].length; i++){
@@ -51,7 +51,7 @@ public class GameGrid {
          if (grid[i][j] == null || !grid[i][j].equals(grid[0][i])) continue outerCol;
         return true; // if the previous for-loop terminated, all positions on this col are the same.
       }
-      
+
       // Check diagonals - note: requires a square array
       boolean same = true;
       // Check (0,0) -> (2,2)
@@ -61,6 +61,7 @@ public class GameGrid {
          break;
       }
       if (same) return true;
+      same = true; // fix: reset same to true if previous check failed
       // Check (2,0) -> (0,2)
       for(int i = 0; i < grid.length; i++){ // i is the row
          String pos = grid[i][grid[i].length-1-i];
@@ -71,18 +72,18 @@ public class GameGrid {
       if (same) return true;
       return false; // none of the matchers worked
 	}
-	
+
 	/**
 	 * @return true if the game ended in a draw.
 	 */
 	public boolean draw() {
       // Any empty space means it's not a draw
       for (String[] row : grid)
-         for (String pos : row) 
+         for (String pos : row)
             if (pos == null) return false;
       return true;
 	}
-	
+
 	/**
 	 * @param r row
 	 * @param c column
@@ -91,7 +92,7 @@ public class GameGrid {
 	public boolean validPlay(int r, int c){
       return r < grid.length && c < grid[r].length && grid[r][c] == null;
 	}
-	
+
 	/**
 	 * Returns a string representing the current state of the game grid using the
 	 * format shown in the problem statement.
