@@ -35,43 +35,55 @@ public class GameGrid {
     grid[r][c] = x ? "X" : "O";
   }
 
-  /**
-   * @return true if the current game state results in a winner.
-   */
-  public boolean winner() {
-    // Check rows
-    outerRow: for (String[] row : grid) {
+  public void clear() {
+    grid = new String[grid.length][grid[0].length];
+  }
+
+  // Check rows
+  public boolean winnerHorizontal() {
+    outer: for (String[] row : grid) {
       for (String pos : row)
-        if (pos == null || !pos.equals(row[0])) continue outerRow;
+        if (pos == null || !pos.equals(row[0])) continue outer;
       return true; // if the previous for-loop terminated, all positions on this row are the same.
     }
+    return false;
+  }
 
-    // Check cols - note: requires a square array
-    outerCol: for (int i = 0; i < grid[0].length; i++) {
-      for (int j = 0; j < grid.length; j++)
-        if (grid[i][j] == null || !grid[i][j].equals(grid[0][i])) continue outerCol;
+  // Check cols - note: requires a square array
+  public boolean winnerVertical() {
+    outer: for (int col = 0; col < grid[0].length; col++) {
+      for (int row = 0; row < grid.length; row++)
+        if (grid[row][col] == null || !grid[row][col].equals(grid[0][col])) continue outer;
       return true; // if the previous for-loop terminated, all positions on this col are the same.
     }
+    return false;
+  }
 
-    // Check diagonals - note: requires a square array
-    boolean same = true;
-    // Check (0,0) -> (2,2)
+  // Check diagonals - note: requires a square array
+  // Check (0,0) -> (2,2)
+  public boolean winnerDiagonalTopLeftBottomRight() {
     for (int i = 0; i < grid.length; i++) {
       if (grid[i][i] != null && grid[i][i].equals(grid[0][0])) continue;
-      same = false;
-      break;
+      return false;
     }
-    if (same) return true;
-    same = true; // fix: reset same to true if previous check failed
-    // Check (2,0) -> (0,2)
+    return true;
+  }
+
+  // Check diagonals - note: requires a square array
+  // Check (2,0) -> (0,2)
+  public boolean winnerDiagonalTopRightBottomLeft() {
     for (int i = 0; i < grid.length; i++) { // i is the row
       String pos = grid[i][grid[i].length - 1 - i];
       if (pos != null && pos.equals(grid[0][grid[0].length - 1])) continue;
-      same = false;
-      break;
+      return false;
     }
-    if (same) return true;
-    return false; // none of the matchers worked
+    return true;
+  }
+
+  /** @return true if the current game state results in a winner. */
+  public boolean winner() {
+    return winnerHorizontal() || winnerVertical() || winnerDiagonalTopLeftBottomRight()
+        || winnerDiagonalTopRightBottomLeft();
   }
 
   /**
