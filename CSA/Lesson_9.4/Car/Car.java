@@ -15,17 +15,19 @@ import java.util.ArrayList;
 public class Car {
   String color = "Black";
   int wheels = 4;
+  double weight = 1000.0;
 
   public Car() {}
 
-  public Car(String color, int wheels) {
+  public Car(String color, int wheels, double weight) {
     this.color = color;
     this.wheels = wheels;
+    this.weight = weight;
   }
 
   @Override
   public String toString() {
-    return "Car, color=" + color + ", wheels=" + wheels;
+    return "Car, color=" + color + ", wheels=" + wheels + ", weight=" + weight;
   }
 
   //A void no-parameter method M (or whatever name you prefer), like the ring method from the Bell class
@@ -46,8 +48,8 @@ class Truck extends Car {
 
   public Truck() {}
 
-  public Truck(String color, int wheels, int tailgateLength) {
-    super(color, wheels);
+  public Truck(String color, int wheels, double weight, int tailgateLength) {
+    super(color, wheels, weight);
     this.tailgateLength = tailgateLength;
   }
 
@@ -88,9 +90,9 @@ class Main {
     ArrayList<Object> list = new ArrayList<>();
     list.add(new Object());
     list.add(new Car());
-    list.add(new Car("Red", 16));
+    list.add(new Car("Red", 16, 1000));
     list.add(new Truck());
-    list.add(new Truck("Red", 16, 20));
+    list.add(new Truck("Red", 16, 2000, 20));
     for (Object o : list)
       statMethMain(o); // discard the return value as it's not present in expected output
 
