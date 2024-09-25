@@ -30,7 +30,7 @@ public class OrderOperations {
     }
 
     private static void mnemonic() {
-        System.out.println("UMBRELA");
+        System.out.println("UMBREBLA");
         System.out.println("Unary (post, then pre)");
         System.out.println("Math (PEMDAS)");
         System.out.println("Bit-shift");
