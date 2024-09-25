@@ -24,8 +24,6 @@ additional_files=() # A list of java files to add to the compilation step (passe
 # END CONFIGURATION
 this="$(basename "$0")"
 this_dir="$(readlink -f -- "$(dirname "$0")")" # might break if cwd is a symlink
-[ -f "$this_dir/.config" ] && . "$this_dir/.config"
-export -n stdin_file cargs jargs dargs classpath output_dir input_files main_class # don't export these
 
 # COLOR vars to keep from branching to tput repeatedly
 RED_COLOR="$(tput setaf 1 2>/dev/null || printf '')"
@@ -68,6 +66,13 @@ resolve() {
     printf '%s' "$ret"   # no newline
   fi
 }
+
+OLD_CWD=$PWD
+# Config expects to be in this_dir for globs
+cd -- "$this_dir" || abort "Could not cd into source directory" 1
+[ -f "$this_dir/.config" ] && . "$this_dir/.config"
+cd -- "$OLD_CWD" || abort "Could not cd into $OLD_CWD" 1
+export -n stdin_file cargs jargs dargs classpath output_dir input_files main_class # don't export these
 
 java_class=$(basename "$this_dir") # /dir/ClassName/test.sh -> ClassName
 
