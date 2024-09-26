@@ -7,3 +7,5 @@ build/
 # Ignore IDEA/Eclipse/Buildship project files
 .settings/
 .project
+.classpath
+.buildpath
