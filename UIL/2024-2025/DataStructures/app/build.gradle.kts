@@ -1,20 +1,22 @@
-plugins { application }
+plugins {
+  id("java")
+  application
+}
 
 repositories { mavenCentral() }
 
 dependencies {
-    // Use JUnit Jupiter for testing.
-    testImplementation(libs.junit.jupiter)
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+  // Use JUnit Jupiter for testing.
+  testImplementation(libs.junit.jupiter)
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.named<Test>("test") { useJUnitPlatform() }
-
-java {
-    toolchain { languageVersion = JavaLanguageVersion.of(22) }
+tasks.named<Test>("test") {
+  useJUnitPlatform()
+  testLogging.showStandardStreams = true
+  testLogging { events("passed", "skipped", "failed") }
 }
 
-application {
-    mainClass = "DataStructures"
-}
+java { toolchain { languageVersion = JavaLanguageVersion.of(22) } }
 
+application { mainClass = "DataStructures" }
