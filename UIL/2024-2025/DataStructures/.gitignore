@@ -9,3 +9,4 @@ build/
 .project
 .classpath
 .buildpath
+kls_database.db
