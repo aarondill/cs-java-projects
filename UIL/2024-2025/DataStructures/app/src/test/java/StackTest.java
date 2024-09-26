@@ -2,13 +2,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import structs.Stack;
 
-/**
- * StackTest
- */
-public class StackTest {
+class StackTest {
 
   @Test
-  static void test() {
+  void test() {
     Stack<Integer> st = new Stack<>();
     st.push(1);
     st.push(2);
@@ -19,10 +16,10 @@ public class StackTest {
   }
 
   @Test
-  static void toStringTest() {
+  void toStringTest() {
     Stack<Integer> st = new Stack<>();
     st.push(1);
     st.push(2);
-    assertEquals(st.toString(), "[1, 2]");
+    assertEquals(st.toString(), "[2, 1]");
   }
 }

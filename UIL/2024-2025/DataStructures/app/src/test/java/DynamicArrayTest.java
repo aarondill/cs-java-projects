@@ -5,10 +5,10 @@ import structs.DynamicArray;
 /**
  * DynamicArrayTest
  */
-public class DynamicArrayTest {
+class DynamicArrayTest {
 
   @Test
-  public static void toStringTest() {
+  public void toStringTest() {
     DynamicArray<String> da = new DynamicArray<>();
     da.add("Hello");
     da.add("World");
@@ -16,7 +16,7 @@ public class DynamicArrayTest {
   }
 
   @Test
-  public static void removeTest() {
+  public void removeTest() {
     DynamicArray<String> da = new DynamicArray<>();
     da.add("Hello");
     assertEquals("[Hello]", da.toString());
@@ -25,7 +25,7 @@ public class DynamicArrayTest {
   }
 
   @Test
-  public static void getTest() {
+  public void getTest() {
     DynamicArray<String> da = new DynamicArray<>();
     da.add("Hello");
     assertEquals("Hello", da.get(0));
