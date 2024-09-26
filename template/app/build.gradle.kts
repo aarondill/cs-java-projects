@@ -15,6 +15,6 @@ java {
 }
 
 application {
-    mainClass = "App"
+    mainClass = "{{ $ROOT }}"
 }
 
