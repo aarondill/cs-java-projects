@@ -15,6 +15,7 @@ test {
   useJUnitPlatform()
   testLogging.showStandardStreams = true
   testLogging {
+    exceptionFormat = 'full'
     events("passed", "skipped", "failed") 
     afterSuite { desc, result ->
       if (desc.parent) return // group the results in one
