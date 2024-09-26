@@ -27,10 +27,16 @@ public class DynamicArray<T> {
     this.data = newData;
   }
 
-  public final void add(T o) {
+  public void add(T o) {
     ensureCapacity(this.size + 1);
     this.data[this.size] = o;
     this.size++;
+  }
+
+  public void remove(int index) {
+    Objects.checkIndex(index, this.size);
+    System.arraycopy(this.data, index + 1, this.data, index, this.size - index - 1);
+    this.size--;
   }
 
   public String toString() {
