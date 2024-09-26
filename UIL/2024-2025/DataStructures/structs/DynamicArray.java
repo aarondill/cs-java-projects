@@ -4,12 +4,8 @@ import java.util.Objects;
 
 public class DynamicArray<T> {
   private final int DEFAULT_CAPACITY = 10;
-  private Object[] data;
+  private Object[] data = new Object[DEFAULT_CAPACITY];
   private int size = 0;
-
-  public DynamicArray() {
-    this.data = new Object[DEFAULT_CAPACITY];
-  }
 
   public int size() {
     return this.size;
@@ -35,13 +31,6 @@ public class DynamicArray<T> {
     ensureCapacity(this.size + 1);
     this.data[this.size] = o;
     this.size++;
-  }
-
-  @SafeVarargs
-  public final void add(T... o) {
-    ensureCapacity(this.size + o.length);
-    for (T t : o)
-      add(t);
   }
 
   public String toString() {
