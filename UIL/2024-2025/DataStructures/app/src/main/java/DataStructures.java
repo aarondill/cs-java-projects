@@ -36,6 +36,6 @@ public class DataStructures {
     st.push(2);
     st.push(1);
     st.push(3);
-    System.out.printf("Remove: %d\n", st.pop()); // Prints 2
+    System.out.printf("Remove: %d\n", pq.remove()); // Prints 1
   }
 }

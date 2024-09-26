@@ -21,4 +21,9 @@ public class PriorityQueue<T extends Comparable<T>> {
   public T remove() {
     return data.removeFirst();
   }
+
+  @Override
+  public String toString() {
+    return data.toString();
+  }
 }
