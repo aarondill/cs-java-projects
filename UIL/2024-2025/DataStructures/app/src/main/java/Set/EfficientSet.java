@@ -1,6 +1,7 @@
 package Set;
 
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 public class EfficientSet<T> implements SetInterface<T> {
   static final Object EXISTS = new Object();
@@ -26,6 +27,11 @@ public class EfficientSet<T> implements SetInterface<T> {
 
   public void clear() {
     map.clear();
+  }
+
+  // No guarantee of order
+  public Stream<T> stream() {
+    return map.keySet().stream();
   }
 
   public Object[] toArray() {

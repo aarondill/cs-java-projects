@@ -1,6 +1,7 @@
 package Set;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 /**
  * This is an easier to understand Set, sacrificing performance to use ArrayList
@@ -29,6 +30,11 @@ public class Set<T> implements SetInterface<T> {
 
   public void clear() {
     data.clear();
+  }
+
+  // in insertion order
+  public Stream<T> stream() {
+    return data.stream();
   }
 
   public Object[] toArray() {

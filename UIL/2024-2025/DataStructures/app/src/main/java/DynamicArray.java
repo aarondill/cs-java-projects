@@ -1,5 +1,7 @@
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class DynamicArray<T> {
   private final int DEFAULT_CAPACITY = 10;
@@ -36,6 +38,10 @@ public class DynamicArray<T> {
     Objects.checkIndex(index, this.size);
     System.arraycopy(this.data, index + 1, this.data, index, this.size - index - 1);
     this.size--;
+  }
+
+  public Stream<T> stream() {
+    return IntStream.range(0, this.size).mapToObj(this::get);
   }
 
   public String toString() {

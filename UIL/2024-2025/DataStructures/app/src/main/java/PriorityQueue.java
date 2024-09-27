@@ -1,6 +1,7 @@
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class PriorityQueue<T extends Comparable<T>> {
   // NOTE: Allows O(1) insertions/removal; Real implementations use a binary heap.
