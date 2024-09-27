@@ -1,4 +1,4 @@
-package structs.Set;
+package Set;
 
 import java.util.ArrayList;
 

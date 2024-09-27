@@ -3,9 +3,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import structs.Set.EfficientSet;
-import structs.Set.Set;
-import structs.Set.SetInterface;
+import Set.EfficientSet;
+import Set.Set;
+import Set.SetInterface;
 
 class SetTest {
   @ParameterizedTest

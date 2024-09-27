@@ -1,5 +1,3 @@
-package structs;
-
 import java.util.LinkedList;
 
 public class Stack<T> {

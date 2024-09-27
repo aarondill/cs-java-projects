@@ -1,5 +1,3 @@
-package structs;
-
 import java.util.Objects;
 
 public class DynamicArray<T> {

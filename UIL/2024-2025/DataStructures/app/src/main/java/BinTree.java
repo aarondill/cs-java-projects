@@ -1,5 +1,3 @@
-package structs;
-
 class Node<T> {
   T data;
   Node<T> left;
