@@ -11,9 +11,8 @@ class LinkedListTest {
       list.add(i);
     assertEquals(10, list.size());
     assertTrue(list.contains(5));
-    assertTrue(list.stream().allMatch(e -> e >= 0 && e < 10));
-    assertEquals(10, list.stream().count());
-    assertArrayEquals(new Integer[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, list.toArray());
+    for (int i = 0; i < 10; i++)
+      assertEquals(i, list.get(i));
     assertEquals("[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]", list.toString());
     for (int i = 9; i >= 0; i--)
       assertTrue(list.remove(i));

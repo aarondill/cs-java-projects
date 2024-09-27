@@ -5,15 +5,12 @@ class Node<T> {
 
   public Node(T data) {
     this.data = data;
-    left = null;
-    right = null;
   }
 
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append('(').append(data).append(')');
     if (left == null && right == null) return sb.toString();
-
     sb.append('{');
     if (left != null) sb.append(left.toString());
     if (right != null) sb.append(',').append(right.toString());
@@ -23,15 +20,8 @@ class Node<T> {
 
 }
 
-/**
- * A simple binary tree implementation.
- */
 public class BinTree<T extends Comparable<T>> {
   public Node<T> root;
-
-  public BinTree() {
-    root = null;
-  }
 
   public void insert(T data) {
     root = insert(root, data);
@@ -64,7 +54,6 @@ public class BinTree<T extends Comparable<T>> {
     } else {
       if (node.left == null) return node.right;
       else if (node.right == null) return node.left;
-
       Node<T> temp = node.right;
       while (temp.left != null)
         temp = temp.left;

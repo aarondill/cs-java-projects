@@ -1,15 +1,16 @@
-import java.util.Iterator;
 import java.util.Objects;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-public class LinkedList<T> implements Iterable<T> {
-  private class Node<E> {
+public class LinkedList<T> {
+  private static class Node<E> {
     E data;
     Node<E> next;
 
     public Node(E data) {
       this.data = data;
+    }
+
+    public String toString() {
+      return String.valueOf(data);
     }
   }
 
@@ -37,8 +38,7 @@ public class LinkedList<T> implements Iterable<T> {
   private Node<T> getNode(int index) {
     Objects.checkIndex(index, size);
     Node<T> current = head;
-    int i = 0;
-    while (i++ < index)
+    for (int i = 0; i < index; i++)
       current = current.next;
     return current;
   }
@@ -49,7 +49,12 @@ public class LinkedList<T> implements Iterable<T> {
 
   public boolean contains(T data) {
     for (int i = 0; i < size; i++) {
-      if (get(i).equals(data)) return true;
+      Node<T> current = getNode(i);
+      if (current.data == null) {
+        if (current.data == data) return true;
+        continue;
+      }
+      if (current.data.equals(data)) return true;
     }
     return false;
   }
@@ -61,88 +66,34 @@ public class LinkedList<T> implements Iterable<T> {
       head = head.next;
       return true;
     }
-    Node<T> current = head;
-    int i = 0;
-    while (i++ < index - 1)
-      current = current.next;
+    Node<T> current = getNode(index - 1);
     current.next = current.next.next;
     return true;
   }
 
+  // Remove the first occurrence of data
   public boolean remove(T data) {
     if (head.data == data) {
       head = head.next;
       size--;
       return true;
     }
-    Node<T> current = head;
-    while (current.next != null) {
-      if (current.next.data == data) {
-        current.next = current.next.next;
-        size--;
-        return true;
-      }
-      current = current.next;
+    for (Node<T> current = head; current != null; current = current.next) {
+      if (current.next.data != data) continue; // Find the node with the correct data
+      current.next = current.next.next;
+      size--;
+      return true;
     }
     return false;
   }
 
-  public Stream<T> stream() {
-    Iterator<T> iterator = iterator();
-    return Stream.generate(iterator::next).limit(size);
-  }
-
-  public Iterator<T> iterator() {
-    return new Iterator<T>() {
-      private Node<T> current = head;
-
-      @Override
-      public boolean hasNext() {
-        return current != null;
-      }
-
-      @Override
-      public T next() {
-        T data = current.data;
-        current = current.next;
-        return data;
-      }
-    };
-  }
-
-  public Object[] toArray() {
-    Object[] a = new Object[size];
-    int i = 0;
-    for (Node<T> current = head; current != null; current = current.next)
-      a[i++] = current.data;
-    return a;
-  }
-
-  @SuppressWarnings("unchecked")
-  public T[] toArray(T[] a) {
-    if (a.length < size) {
-      a = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
-    }
-    int i = 0;
-    for (Node<T> current = head; current != null; current = current.next)
-      a[i++] = current.data;
-    if (a.length > size) a[size] = null;
-    return a;
-  }
-
   public String toString() {
-    Node<T> current = head;
-    StringBuilder sb = new StringBuilder();
-    sb.append("[");
-    while (current != null) {
-      sb.append(current.data);
-      current = current.next;
-      if (current != null) {
-        // Only append comma if not last element
-        sb.append(',').append(' ');
-      }
+    // Guess that each node will be 5 chars
+    StringBuilder sb = new StringBuilder(2 + size * 5).append('[');
+    for (Node<T> current = head; current != null; current = current.next) {
+      sb.append(current);
+      if (current.next != null) sb.append(',').append(' ');
     }
-    sb.append("]");
-    return sb.toString();
+    return sb.append(']').toString();
   }
 }
