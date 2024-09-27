@@ -1,4 +1,5 @@
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class LinkedList<T> {
   private static class Node<E> {
@@ -7,6 +8,10 @@ public class LinkedList<T> {
 
     public Node(E data) {
       this.data = data;
+    }
+
+    public E data() {
+      return data;
     }
 
     public String toString() {
@@ -48,15 +53,7 @@ public class LinkedList<T> {
   }
 
   public boolean contains(T data) {
-    for (int i = 0; i < size; i++) {
-      Node<T> current = getNode(i);
-      if (current.data == null) {
-        if (current.data == data) return true;
-        continue;
-      }
-      if (current.data.equals(data)) return true;
-    }
-    return false;
+    return nodeStream().anyMatch(node -> Objects.equals(node.data, data));
   }
 
   public boolean remove(int index) {
@@ -85,6 +82,14 @@ public class LinkedList<T> {
       return true;
     }
     return false;
+  }
+
+  private Stream<Node<T>> nodeStream() {
+    return Stream.iterate(head, Objects::nonNull, (c) -> c.next);
+  }
+
+  public Stream<T> stream() {
+    return nodeStream().map(Node::data);
   }
 
   public String toString() {
