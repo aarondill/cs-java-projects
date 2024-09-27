@@ -13,7 +13,7 @@ public class PriorityQueue<T extends Comparable<T>> {
   }
 
   public T peek() {
-    return data.get(0);
+    return data.getFirst();
   }
 
   public T remove() {

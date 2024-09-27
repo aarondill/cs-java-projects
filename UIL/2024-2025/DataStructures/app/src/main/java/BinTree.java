@@ -8,14 +8,12 @@ class Node<T> {
   }
 
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append('(').append(data).append(')');
+    StringBuilder sb = new StringBuilder(20).append('(').append(data).append(')');
     if (left == null && right == null) return sb.toString();
     sb.append('{');
     if (left != null) sb.append(left.toString());
     if (right != null) sb.append(',').append(right.toString());
-    sb.append('}');
-    return sb.toString();
+    return sb.append('}').toString();
   }
 
 }

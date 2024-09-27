@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Objects;
 
 public class DynamicArray<T> {
@@ -38,14 +39,10 @@ public class DynamicArray<T> {
   }
 
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("[");
-    for (int i = 0; i < this.size; i++) {
-      sb.append(this.data[i]);
-      if (i != this.size - 1) sb.append(", ");
-    }
-    sb.append("]");
-    return sb.toString();
+    StringBuilder sb = new StringBuilder().append('[');
+    Arrays.stream(this.data).limit(this.size - 1).forEach(o -> sb.append(o).append(',').append(' '));
+    sb.append(this.data[this.size - 1]);
+    return sb.append(']').toString();
   }
 
 }
