@@ -24,7 +24,6 @@ public class Set<T> implements SetInterface<T> {
   }
 
   public boolean remove(Object o) {
-    // we don't need removeAll, since we check before inserting that only one can be contained
     return data.remove(o);
   }
 
