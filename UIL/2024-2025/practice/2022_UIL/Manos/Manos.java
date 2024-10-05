@@ -9,8 +9,10 @@ public class Manos {
 
   private static void each(Scanner scan) {
     // Parse the input:
+    int a = scan.nextInt(), b = scan.nextInt();
     scan.nextLine();
     // Handle output:
+    System.out.println(a == b ? "P2" : "P1");
   }
 
   public static void main(String... args) throws FileNotFoundException {

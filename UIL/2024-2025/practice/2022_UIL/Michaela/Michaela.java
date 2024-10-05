@@ -1,16 +1,17 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Michaela {
-  @SuppressWarnings("unused")
   private static int caseNum = 1;
   private static final String INPUT_FILE = "michaela.dat";
 
   private static void each(Scanner scan) {
     // Parse the input:
-    scan.nextLine();
-    // Handle output:
+    String msg = scan.nextLine().toUpperCase();
+    System.out.println("Message #" + caseNum + ": " + msg.chars().mapToObj(Integer::toBinaryString)
+        .map(s -> s.replace('1', '-').replace('0', '.')).collect(Collectors.joining(" ")));
   }
 
   public static void main(String... args) throws FileNotFoundException {
