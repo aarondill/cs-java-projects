@@ -11,7 +11,8 @@ public class Solution {
     long sumToEnd = end * (end + 1) >> 1;
     long sum = sumToEnd - sumToStart;
 
-    System.out.println(sum - minus);
+    if (sum > minus) System.out.println(sum - minus);
+    else System.out.println(0);
   }
 
   public static void main(String... args) {
