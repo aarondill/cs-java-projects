@@ -12,12 +12,19 @@ public class Solution {
     List<Integer> defense =
         Arrays.stream(scan.nextLine().split(" ")).map(Integer::parseInt).collect(Collectors.toList());
     // Handle output:
-    int maxOffense = offense.stream().max(Integer::compareTo).get();
-    int maxDefense = defense.stream().max(Integer::compareTo).get();
+    while (offense.size() > 0 && defense.size() > 0) {
+      int o = offense.remove(0);
+      int d = defense.remove(0);
+      if (o > d) {
+        offense.add(o);
+      } else if (o < d) {
+        defense.add(d);
+      }
+    }
 
-    if (maxOffense > maxDefense) System.out.println("Offense will win");
-    else if (maxOffense < maxDefense) System.out.println("Defense will win");
-    else System.out.println("There is no winner");
+    if (defense.size() == 0 && offense.size() == 0) System.out.println("There is no winner");
+    else if (defense.size() == 0) System.out.println("Offense will win");
+    else if (offense.size() == 0) System.out.println("Defense will win");
   }
 
   public static void main(String... args) {
