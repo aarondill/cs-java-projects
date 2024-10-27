@@ -44,17 +44,12 @@ public class Dijkstra {
   public final static record Result<T>(Map<Node<T>, Integer> distances, Map<Node<T>, Node<T>> prev) {}
 
   // Returns two maps: the first maps each node to its distance from the start node, and the second maps each node to its previous node in the shortest path.
-  public static <T> Result<T> dijkstra(Set<Node<T>> graph, Node<T> start) {
-    Map<Node<T>, Integer> distances = new HashMap<>(graph.size());
-    Map<Node<T>, Node<T>> prev = new HashMap<>(graph.size());
+  public static <T> Result<T> dijkstra(Node<T> start) {
+    Map<Node<T>, Integer> distances = new HashMap<>();
+    Map<Node<T>, Node<T>> prev = new HashMap<>();
     // Nodes are sorted by their distance from the start node.
     PriorityQueue<Node<T>> pq = new PriorityQueue<>((n1, n2) -> distances.get(n1).compareTo(distances.get(n2)));
 
-    // Default all distances to "infinity" and no previous node.
-    for (Node<T> node : graph) {
-      distances.put(node, Integer.MAX_VALUE);
-      prev.put(node, null);
-    }
     // Set the start node's distance to 0 and add it to the priority queue.
     distances.put(start, 0);
     pq.add(start);
@@ -70,7 +65,7 @@ public class Dijkstra {
         // The new distance from the start node to the current node is the distance to the start node plus the weight of the edge.
         int newDistance = distances.get(current) + weight;
         // If this distance is less than the current distance, update the distance and previous node. This means we've found a shorter path than before.
-        if (newDistance < distances.get(node)) {
+        if (newDistance < distances.getOrDefault(node, Integer.MAX_VALUE)) {
           distances.put(node, newDistance);
           prev.put(node, current);
           // Add this node to our work queue, so we can find its neighbors.
@@ -99,9 +94,8 @@ public class Dijkstra {
     c.addNeighbor(e, 10);
 
     // Create graph
-    var graph = Set.of(a, b, c, d, e, f);
     var start = a;
-    var result = Dijkstra.dijkstra(graph, start);
+    var result = Dijkstra.dijkstra(start);
 
     var end = e;
     // Retreive shortest path from end to start
