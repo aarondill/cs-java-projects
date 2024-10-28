@@ -78,17 +78,13 @@ public class Hayride {
       Node firstNode = nodes.computeIfAbsent(first, Node::new);
       Node secondNode = nodes.computeIfAbsent(second, Node::new);
       firstNode.addConnection(secondNode, weight);
-      // secondNode.addConnection(firstNode, weight); // Bidirectional? Check the problem statement.
     }
     Node start = Objects.requireNonNull(nodes.get("Start"), "Start node not found");
     Node stop = Objects.requireNonNull(nodes.get("Stop"), "Stop node not found");
     Result result = dijkstra(start);
-    // Output? Check the problem statement.
     List<String> path = Stream.iterate(stop, Objects::nonNull, result.parents()::get).map(Node::name).toList();
-    System.out.println("Shortest path from Start to Stop:");
-    System.out.println(String.join(" -> ", path.reversed()));
-    System.out.println("Cost: " + result.distances().get(stop));
-
+    path.reversed().forEach(System.out::println);
+    System.out.println();
   }
 
   public static void main(String... args) throws FileNotFoundException {
