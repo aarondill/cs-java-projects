@@ -1,17 +1,17 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 record Point(int x, int y) {}
 
@@ -35,8 +35,6 @@ class Node {
 }
 
 public class Frankenstein {
-  @SuppressWarnings("unused")
-  private static int caseNum = 1;
   private static final String INPUT_FILE = "frankenstein.dat";
 
   private record Result(Map<Node, Integer> distances, Map<Node, Node> previous) {}
@@ -44,11 +42,11 @@ public class Frankenstein {
   private static Result dijkstra(Node start) {
     Map<Node, Integer> distances = new HashMap<>();
     Map<Node, Node> previous = new HashMap<>();
-    PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(n -> distances.get(n)));
+    PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(distances::get));
     distances.put(start, 0);
     pq.add(start);
     while (!pq.isEmpty()) {
-      var current = pq.poll();
+      var current = pq.remove();
       for (var neighbor : current.neighbors()) {
         int newDistance = distances.get(current) + 1;
         if (newDistance < distances.getOrDefault(neighbor, Integer.MAX_VALUE)) {
@@ -62,7 +60,7 @@ public class Frankenstein {
   }
 
   private static void each(Scanner scan) {
-    int dim = Integer.parseInt(scan.nextLine(), 10);
+    int dim = Integer.parseInt(scan.nextLine());
     // Note: Nodes keep track of their own position, the array is only to link them together initially.
     Node[][] maze = new Node[dim][dim];
 
@@ -101,9 +99,8 @@ public class Frankenstein {
     Result result = dijkstra(start);
 
     // Get all Points in the shortest path from start to end
-    Set<Point> path = new HashSet<>();
-    for (var node = end; node != null; node = result.previous.get(node))
-      path.add(node.location);
+    Set<Point> path =
+        Stream.iterate(end, Objects::nonNull, result.previous::get).map(n -> n.location).collect(Collectors.toSet());
 
     // Print the maze, only showing points in the shortest path
     for (int x = 0; x < dim; x++) {
@@ -119,7 +116,7 @@ public class Frankenstein {
   public static void main(String... args) throws FileNotFoundException {
     try (Scanner scan = new Scanner(new File(INPUT_FILE))) {
       int dataCount = Integer.parseInt(scan.nextLine(), 10);
-      for (int i = 0; i < dataCount; i++, caseNum++)
+      for (int i = 0; i < dataCount; i++)
         each(scan);
     } catch (FileNotFoundException e) {
       System.err.println("Could not find file: " + INPUT_FILE);

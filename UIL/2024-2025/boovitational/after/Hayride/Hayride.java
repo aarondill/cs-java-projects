@@ -3,26 +3,26 @@ import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.stream.Stream;
 
 class Node {
   private final String name;
-  private Map<Node, Integer> connections = new HashMap<>();
+  private final Map<Node, Integer> connections = new HashMap<>();
 
   public String name() {
     return name;
   }
 
-  public Node addConnection(Node node, int weight) {
+  public void addConnection(Node node, int weight) {
     connections.put(node, weight);
-    return this;
   }
 
   public Map<Node, Integer> connections() {
@@ -40,8 +40,6 @@ class Node {
 }
 
 public class Hayride {
-  @SuppressWarnings("unused")
-  private static int caseNum = 1;
   private static final String INPUT_FILE = "hayride.dat";
 
   private static record Result(Map<Node, Integer> distances, Map<Node, Node> parents) {}
@@ -49,12 +47,12 @@ public class Hayride {
   private static Result dijkstra(Node start) {
     Map<Node, Integer> distances = new HashMap<>();
     Map<Node, Node> parents = new HashMap<>();
-    Queue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(n -> distances.get(n)));
+    Queue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(distances::get));
     distances.put(start, 0);
     pq.add(start);
     while (!pq.isEmpty()) {
       Node current = pq.remove();
-      for (Map.Entry<Node, Integer> entry : current.connections().entrySet()) {
+      for (var entry : current.connections().entrySet()) {
         Node neighbor = entry.getKey();
         int weight = entry.getValue();
         int newDistance = distances.get(current) + weight;
@@ -88,7 +86,7 @@ public class Hayride {
     // Output? Check the problem statement.
     List<String> path = Stream.iterate(stop, Objects::nonNull, result.parents()::get).map(Node::name).toList();
     System.out.println("Shortest path from Start to Stop:");
-    System.out.println(String.join(" -> ", path));
+    System.out.println(String.join(" -> ", path.reversed()));
     System.out.println("Cost: " + result.distances().get(stop));
 
   }
@@ -96,7 +94,7 @@ public class Hayride {
   public static void main(String... args) throws FileNotFoundException {
     try (Scanner scan = new Scanner(new File(INPUT_FILE))) {
       int dataCount = Integer.parseInt(scan.nextLine(), 10);
-      for (int i = 0; i < dataCount; i++, caseNum++)
+      for (int i = 0; i < dataCount; i++)
         each(scan);
     } catch (FileNotFoundException e) {
       System.err.println("Could not find file: " + INPUT_FILE);
