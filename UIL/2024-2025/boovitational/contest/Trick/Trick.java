@@ -1,50 +1,39 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Trick {
-  @SuppressWarnings("unused")
-  private static int caseNum = 1;
   private static final String INPUT_FILE = "trick.dat";
 
-  private static void each(Scanner scan) {
-    while (scan.hasNextLine()) {
-      Scanner line = new Scanner(scan.nextLine());
-      String first = line.next();
-      boolean firstB = false;
-      if (first.equals("not")) {
-        firstB = true;
-        first = "";
-      }
-      String tmp = "";
-      while (!(tmp = line.next()).equals("AND") && !tmp.equals("OR")) {
-        first += " " + tmp;
-      }
-      if (tmp.equals("AND")) tmp = "OR";
-      else tmp = "AND";
+  private static void each(String line) {
+    Matcher matcher = Pattern.compile("^(?<first>.+)\\s+(?<op>AND|OR)\\s+(?<second>.*)$").matcher(line);
+    if (!matcher.matches()) throw new IllegalArgumentException("Invalid line: " + line);
+    String first = matcher.group("first");
+    String second = matcher.group("second");
+    String op = matcher.group("op");
 
-      String second = line.next();
-      boolean secondB = false;
-      if (second.equals("not")) {
-        secondB = true;
-        second = "";
-      }
-      while (line.hasNext()) {
-        second += " " + line.next();
-      }
-      System.out.print("not (");
-      if (!firstB) System.out.print("not ");
-      System.out.print(first.trim() + " " + tmp + " ");
+    // Invert the first and second
+    if (first.startsWith("not ")) first = first.substring("not ".length());
+    else first = "not " + first;
 
-      if (!secondB) System.out.print("not ");
-      System.out.println(second.trim() + ")");
+    if (second.startsWith("not ")) second = second.substring("not ".length());
+    else second = "not " + second;
 
-    }
+    // Invert the operator
+    op = switch (op) {
+      case "AND" -> "OR";
+      case "OR" -> "AND";
+      default -> throw new IllegalArgumentException("Invalid operator: " + op);
+    };
+    System.out.printf("not (%s %s %s)\n", first, op, second);
   }
 
   public static void main(String... args) throws FileNotFoundException {
     try (Scanner scan = new Scanner(new File(INPUT_FILE))) {
-      each(scan);
+      while (scan.hasNextLine())
+        each(scan.nextLine());
     } catch (FileNotFoundException e) {
       System.err.println("Could not find file: " + INPUT_FILE);
       throw e;

@@ -17,10 +17,11 @@ public class Spooky {
       if (n % 17 == 0 || n % 39 == 0 || n % 43 == 0) count++;
       if (Long.toString(n).contains("666")) count++;
 
-      System.out.print(n + " ");
-      if (count == 0) System.out.println("Candy");
-      else if (count == 1) System.out.println("BOO!");
-      else System.out.println("AAAA!");
+      System.out.println(n + " " + switch (count) {
+        case 0 -> "Candy";
+        case 1 -> "BOO!";
+        default -> "AAAA!";
+      });
     }
   }
 

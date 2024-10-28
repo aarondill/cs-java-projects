@@ -1,8 +1,10 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 class Contestent implements Comparable<Contestent> {
   public int score;
@@ -28,20 +30,16 @@ public class Costume {
     // Parse the input:
     int numContest = scan.nextInt();
     scan.nextLine();
-    List<Contestent> contestents = new ArrayList<>(numContest);
-    for (int i = 0; i < numContest; i++) {
+    List<Contestent> contestents = IntStream.range(0, numContest).mapToObj(i -> {
       String name = scan.nextLine();
       int score = scan.nextInt() + scan.nextInt() + scan.nextInt() + scan.nextInt() + scan.nextInt();
       if (scan.hasNextLine()) scan.nextLine();
-      Contestent c = new Contestent(score, name);
-      contestents.add(c);
-    }
-    contestents.sort(null);
-    contestents = contestents.reversed();
-    for (int i = 0; i < numContest; i++) {
-      Contestent c = contestents.get(i);
-      System.out.printf("%d. (%2d) - %s\n", i + 1, c.score, c.name);
-    }
+      return new Contestent(score, name);
+    }).sorted(Comparator.reverseOrder()).toList();
+
+    IntStream.range(0, contestents.size())
+        .mapToObj(i -> String.format("%d. (%2d) - %s", i + 1, contestents.get(i).score, contestents.get(i).name))
+        .forEach(System.out::println);
     System.out.println("----------------");
   }
 
