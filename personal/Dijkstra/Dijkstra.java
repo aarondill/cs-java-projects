@@ -3,8 +3,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.PriorityQueue;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 // A node with a value and neighbors.
@@ -43,8 +43,19 @@ public class Dijkstra {
   // A simple class to hold the result of the Dijkstra algorithm.
   public final static record Result<T>(Map<Node<T>, Integer> distances, Map<Node<T>, Node<T>> prev) {}
 
-  // Returns two maps: the first maps each node to its distance from the start node, and the second maps each node to its previous node in the shortest path.
-  public static <T> Result<T> dijkstra(Node<T> start) {
+  /**
+   * If end is non-null, distances and prev are only guaranteed to contain nodes
+   * that are within the shortest path from the start node to end. Any nodes that
+   * are unreachable from the start node will not be in the result.
+   *
+   * @param start the starting node
+   * @param end (nullable) the node we want to find the shortest path to.
+   *
+   * @return two maps: the first maps each node to its distance from the start
+   *         node, the second maps each node to its previous node in the shortest
+   *         path.
+   */
+  public static <T> Result<T> dijkstra(Node<T> start, Node<T> end) {
     Map<Node<T>, Integer> distances = new HashMap<>();
     Map<Node<T>, Node<T>> prev = new HashMap<>();
     // Nodes are sorted by their distance from the start node.
@@ -57,9 +68,10 @@ public class Dijkstra {
     // While we have nodes to visit, do so
     while (!pq.isEmpty()) {
       Node<T> current = pq.remove();
+      if (current == end) break; // If we've reached the end node, we're done.
       // Iterate all the neighbors of the current node
       for (Map.Entry<Node<T>, Integer> neighbor : current.getNeighbors().entrySet()) {
-        Node<T> node = neighbor.getKey();
+        Node<T> node = Objects.requireNonNull(neighbor.getKey(), "Neighbor is null");
         int weight = neighbor.getValue();
 
         // The new distance from the start node to the current node is the distance to the start node plus the weight of the edge.
@@ -95,9 +107,9 @@ public class Dijkstra {
 
     // Create graph
     var start = a;
-    var result = Dijkstra.dijkstra(start);
-
     var end = e;
+    var result = dijkstra(start, end);
+
     // Retreive shortest path from end to start
     List<Node<String>> path = new ArrayList<>();
     for (var curr = end; curr != null; curr = result.prev().get(curr))
