@@ -1,23 +1,28 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Solution {
-  @SuppressWarnings("unused")
-  private static int caseNum = 1;
 
   private static void each(Scanner scan) {
-    // Parse the input:
-    scan.nextLine();
-    // Handle output:
+    int n = scan.nextInt();
+    double tolerance = scan.nextDouble();
+    if (scan.hasNextLine()) scan.nextLine();
+    double total = 0;
+    for (int i = 0; i < n; i++) {
+      /* String name= */ scan.next();
+      double price = scan.nextDouble();
+      double sweet = scan.nextDouble();
+      if (scan.hasNextLine()) scan.nextLine();
+      if (sweet <= tolerance) {
+        total += price;
+      }
+    }
+    System.out.printf("$%,.3f\n", total);
+
   }
 
-  public static void main(String... args) throws FileNotFoundException {
+  public static void main(String... args) {
     try (Scanner scan = new Scanner(System.in)) {
-      int dataCount = Integer.parseInt(scan.nextLine(), 10);
-      for (int i = 0; i < dataCount; i++, caseNum++)
-        each(scan);
+      each(scan);
     }
   }
 }
