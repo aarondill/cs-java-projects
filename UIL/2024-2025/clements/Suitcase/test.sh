@@ -9,8 +9,7 @@ javac="/usr/lib/jvm/$javav/bin/javac"
 cd -- "$this_dir"
 
 "$javac" ./Solution.java
-stdin=./solution.dat
-[ -t 0 ] || stdin=/dev/stdin
+stdin=/dev/stdin
 
 exit=0
 "$java" Solution "$@" <"$stdin" || exit=$?
