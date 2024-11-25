@@ -50,11 +50,10 @@ public class Solution {
   @SuppressWarnings("unused")
   private static int caseNum = 1;
 
-  private static Result astar(Node start, Node end) {
+  private static Result dijkstra(Node start, Node end) {
     Map<Node, Integer> distances = new HashMap<>();
     Map<Node, Node> bestRoute = new HashMap<>();
-    PriorityQueue<Node> queue = new PriorityQueue<>(
-        Comparator.comparingInt(n -> distances.get(n) + (int) Math.hypot(n.pos.x - end.pos.x, n.pos.y - end.pos.y)));
+    PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(distances::get));
     distances.put(start, 0);
     queue.add(start);
     // use the pythag distance as the heuristic
@@ -121,7 +120,7 @@ public class Solution {
     // (0, 0) to (m - 1, m - 1)
     Node start = graph.get(0).get(0);
     Node end = graph.get(m - 1).get(m - 1);
-    var result = astar(start, end);
+    var result = dijkstra(start, end);
 
     int cost = 0;
     // NOTE: we aren't paid for the start node
