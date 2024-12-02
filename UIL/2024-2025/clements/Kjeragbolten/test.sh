@@ -2,7 +2,7 @@
 set -euC -o pipefail
 this_dir="$(readlink -f -- "$(dirname "$0")")" # might break if cwd is a symlink
 
-javav=jdk-15
+javav=jdk-22.0.1
 java="/usr/lib/jvm/$javav/bin/java"
 javac="/usr/lib/jvm/$javav/bin/javac"
 
