@@ -6,8 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Solution {
-  static List<String> vowels = List.of("a", "e", "i", "o", "u").stream().flatMap(c -> Stream.of(c, (c).toUpperCase()))
-      .collect(Collectors.toList());
+  static List<String> vowels = List.of("a", "e", "i", "o", "u", "A", "E", "I", "O", "U");
 
   static private String replaceAll(String s, String with, String... replacements) {
     StringBuilder ret = new StringBuilder();
@@ -42,9 +41,8 @@ public class Solution {
       (String s) -> {
         StringBuilder ret = new StringBuilder();
         for (char c : s.toCharArray()) {
-          if (vowels.contains(String.valueOf(c))) ret.append(c);
-          else if (!Character.isLetter(c)) ret.append(c);
-          else ret.append((char) (c - 1));
+          if (("" + c).matches("[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]")) ret.append((char) (c - 1));
+          else ret.append(c);
         }
         return ret.toString();
       } //all non-vowels replaced by the letter before them
@@ -53,7 +51,7 @@ public class Solution {
   private static void each(Scanner scan) {
     // Parse the input:
     int n = scan.nextInt();
-    String m = scan.nextLine().stripLeading();
+    String m = scan.nextLine().trim();
     System.out.println(PONDS.get(n - 1).apply(m));
   }
 
