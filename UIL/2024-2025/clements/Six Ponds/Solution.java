@@ -41,8 +41,9 @@ public class Solution {
       (String s) -> {
         StringBuilder ret = new StringBuilder();
         for (char c : s.toCharArray()) {
-          if (("" + c).matches("[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]")) ret.append((char) (c - 1));
-          else ret.append(c);
+          if (vowels.contains(String.valueOf(c))) ret.append(c);
+          else if (!Character.isLetter(c)) ret.append(c);
+          else ret.append((char) (c - 1));
         }
         return ret.toString();
       } //all non-vowels replaced by the letter before them
