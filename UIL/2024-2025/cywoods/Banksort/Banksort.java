@@ -9,7 +9,17 @@ public class Banksort {
 
   private static void each(Scanner scan) {
     // Parse the input:
-    scan.nextLine();
+    long sum = 0;
+    while (scan.hasNextLine()) {
+      String line = scan.nextLine();
+      if (line.equals("")) break;
+      try {
+        sum += Integer.parseInt(line);
+      } catch (Exception e) {
+      }
+    }
+    System.out.println(sum);
+
     // Handle output:
   }
 

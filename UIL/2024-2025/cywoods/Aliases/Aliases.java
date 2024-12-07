@@ -9,7 +9,8 @@ public class Aliases {
 
   private static void each(Scanner scan) {
     // Parse the input:
-    scan.nextLine();
+    String name = scan.nextLine();
+    System.out.println(name.replaceAll("[0-9]", ""));
     // Handle output:
   }
 

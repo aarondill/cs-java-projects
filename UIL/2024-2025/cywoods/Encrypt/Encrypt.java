@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Encrypt {
@@ -8,9 +10,24 @@ public class Encrypt {
   private static final String INPUT_FILE = "encrypt.dat";
 
   private static void each(Scanner scan) {
-    // Parse the input:
-    scan.nextLine();
-    // Handle output:
+    char[] key = scan.nextLine().toCharArray();
+    String[] allPasswords = scan.nextLine().split("\\s+");
+
+    List<String> encrypted = new ArrayList<>();
+    for (String passwordS : allPasswords) {
+      char[] password = passwordS.toCharArray();
+      StringBuilder res = new StringBuilder();
+      for (int i = 0; i < password.length; i++) {
+        int newChar = (password[i] - 'A') ^ (key[i] - 'A');
+        if (newChar >= 26) newChar -= 26;
+        else if (newChar < 0 && Math.abs(newChar) < 26) newChar = -newChar;
+        else if (newChar < 0 && Math.abs(newChar) > 26) newChar = -newChar - 26;
+        res.append((char) (newChar + 'A'));
+      }
+      encrypted.add(res.toString());
+    }
+    encrypted.sort(null);
+    System.out.println(String.join(" ", encrypted));
   }
 
   public static void main(String... args) throws FileNotFoundException {

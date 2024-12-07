@@ -9,8 +9,30 @@ public class Scammers {
 
   private static void each(Scanner scan) {
     // Parse the input:
-    scan.nextLine();
-    // Handle output:
+    String message = "";
+    String name = null;
+
+    String[] line = scan.nextLine().split(":", 2);
+    name = line[0];
+    message += line[1].length() > 0 ? line[1].substring(1) : "";
+    String tmp;
+    while (scan.hasNextLine() && !(tmp = scan.nextLine()).equals("")) {
+      message += tmp;
+    }
+
+    message = message.toLowerCase();
+    char[] lets = {'s', 'c', 'a', 'm'};
+    int i = 0;
+    for (char c : message.toCharArray()) {
+      if (c == lets[i]) i++;
+      if (i == lets.length) break;
+    }
+    if (i == lets.length) {
+      System.out.println(name + " is a scammer!");
+    } else {
+      System.out.println(name + " is safe to text.");
+    }
+
   }
 
   public static void main(String... args) throws FileNotFoundException {

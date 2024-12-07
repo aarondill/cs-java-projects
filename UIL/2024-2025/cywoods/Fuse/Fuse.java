@@ -9,7 +9,8 @@ public class Fuse {
 
   private static void each(Scanner scan) {
     // Parse the input:
-    scan.nextLine();
+    int size = scan.nextLine().length() * 2;
+    System.out.println(size + " seconds til it blows!");
     // Handle output:
   }
 

@@ -9,7 +9,7 @@ public class Createemail {
 
   private static void each(Scanner scan) {
     // Parse the input:
-    scan.nextLine();
+    System.out.println(scan.nextLine() + "@hotmail.com");
     // Handle output:
   }
 
