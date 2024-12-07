@@ -1,0 +1,20 @@
+2
+3 4 3
+Mafia_A A B C
+Mafia_B D E F
+Mafia_C G H I
+Site_A A B D E G
+Site_B A C D I H
+Site_C B C D E I
+Site_D I C G H
+A Site_A -> C Site_C
+E Site_C -> H Site_B
+G Site_D -> D Site_A
+2 3 2
+Mafia_X X1 X2
+Mafia_Y Y1 Y2
+Site_A X1 Y1 X2
+Site_B Y1 X2
+Site_C X1 Y2
+X1 Site_A -> X2 Site_B
+Y2 Site_C -> Y1 Site_B
