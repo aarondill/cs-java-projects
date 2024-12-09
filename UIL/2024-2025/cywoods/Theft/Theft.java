@@ -44,10 +44,10 @@ public class Theft {
       profit += prices.remove(maxI);
       stolen.add(objects.remove(maxI));
     }
-    if (profit == 0) System.out.println("Nothing could be stolen");
+    System.out.println("Max Capacity: " + capacityCopy);
+    System.out.println("Max Profit: $" + profit);
+    if (profit == 0) System.out.println("Nothing could be stolen...");
     else {
-      System.out.println("Max Capacity: " + capacityCopy);
-      System.out.println("Max Profit: $" + profit);
       objectsCopy.removeAll(objects);
       System.out.println(String.join("\n", objectsCopy));
 
