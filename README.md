@@ -3,6 +3,7 @@
 This is my online backup of my java projects completed throughout school.
 
 ### Lines of code
+<sup><sub>Generated at commit 3117ea5234ab521338e376cab987f14fa387cde3</sub></sup>
 cloc|github.com/AlDanial/cloc v 1.96
 --- | ---
 
@@ -18,10 +19,10 @@ Text|3|0|0|126
 JSON|16|0|0|77
 DOS Batch|1|21|2|71
 Gradle|4|13|4|64
-YAML|1|0|2|31
+YAML|1|0|2|53
 Markdown|2|2|1|26
 SVG|2|12|40|12
 Properties|1|0|0|7
 TOML|1|1|0|4
 --------|--------|--------|--------|--------
-SUM:|694|2959|8509|25293
+SUM:|694|2959|8509|25315
