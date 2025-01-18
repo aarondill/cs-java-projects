@@ -1,0 +1,84 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class Helen {
+  @SuppressWarnings("unused")
+  private static int caseNum = 1;
+  private static final String INPUT_FILE = "helen.dat";
+
+  private static void each(Scanner scan) {
+    // Parse the input:
+    String[] tokens = scan.nextLine().split("\\s+");
+    Character variable = null;
+    int tokenWithX = -1;
+    for (int i = 0; i < tokens.length; i++) {
+      String token = tokens[i];
+      if (token.matches(".*[a-z].*")) {
+        variable = token.charAt(token.length() - 1);
+        tokenWithX = i;
+      }
+    }
+
+    if (tokenWithX == 4) {
+      String token = tokens[tokenWithX];
+      double first = Double.parseDouble(tokens[0]);
+      double three = Double.parseDouble(tokens[2]);
+      String sign = tokens[1];
+      double res = switch (sign) {
+        case "+" -> first + three;
+        case "*" -> first * three;
+        case "-" -> first - three;
+        case "/" -> first / three;
+        default -> throw new IllegalStateException();
+      };
+      double coeef = token.length() == 1 ? 1 : Double.parseDouble(token.substring(0, token.length() - 1));
+
+      double x = res / coeef;
+      System.out.printf("%s = %.3f\n", variable, x);
+    } else if (tokenWithX == 0) {
+      String token = tokens[tokenWithX];
+      double fifth = Double.parseDouble(tokens[4]);
+      double three = Double.parseDouble(tokens[2]);
+      String sign = tokens[1];
+      double res = switch (sign) {
+        case "+" -> fifth - three;
+        case "*" -> fifth / three;
+        case "-" -> fifth + three;
+        case "/" -> fifth * three;
+        default -> throw new IllegalStateException();
+      };
+      double coeef = token.length() == 1 ? 1 : Double.parseDouble(token.substring(0, token.length() - 1));
+      double x = res / coeef;
+      System.out.printf("%s = %.3f\n", variable, x);
+    } else if (tokenWithX == 2) {
+      String token = tokens[tokenWithX];
+      double first = Double.parseDouble(tokens[0]);
+      double fifth = Double.parseDouble(tokens[4]);
+      String sign = tokens[1];
+
+      double res = switch (sign) {
+        case "+" -> fifth - first;
+        case "*" -> fifth / first;
+        case "-" -> -(fifth - first);
+        case "/" -> Math.pow(fifth / first, -1);
+        default -> throw new IllegalStateException();
+      };
+      double coeef = token.length() == 1 ? 1 : Double.parseDouble(token.substring(0, token.length() - 1));
+      double x = res / coeef;
+      System.out.printf("%s = %.3f\n", variable, x);
+    }
+
+  }
+
+  public static void main(String... args) throws FileNotFoundException {
+    try (Scanner scan = new Scanner(new File(INPUT_FILE))) {
+      int dataCount = Integer.parseInt(scan.nextLine(), 10);
+      for (int i = 0; i < dataCount; i++, caseNum++)
+        each(scan);
+    } catch (FileNotFoundException e) {
+      System.err.println("Could not find file: " + INPUT_FILE);
+      throw e;
+    }
+  }
+}
