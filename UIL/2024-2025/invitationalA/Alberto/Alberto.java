@@ -4,12 +4,14 @@ import java.util.Scanner;
 
 public class Alberto {
   public static void main(String... args) throws FileNotFoundException {
-    System.out.println(" ___    ___  ___   ______");
-    System.out.println("|__ \\  / _ \\|__ \\ | _____|");
-    System.out.println("   ) || | | |  ) || |___");
-    System.out.println("  / / | | | | / / |____ \\");
-    System.out.println(" / /_ | |_| |/ /_  ____) |");
-    System.out.println("|____| \\___/|____||_____/");
+    System.out.println("""
+         ___    ___  ___   ______
+        |__ \\  / _ \\|__ \\ | _____|
+           ) || | | |  ) || |___
+          / / | | | | / / |____ \\
+         / /_ | |_| |/ /_  ____) |
+        |____| \\___/|____||_____/
+        """);
 
   }
 }

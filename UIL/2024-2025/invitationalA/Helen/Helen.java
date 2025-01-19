@@ -20,55 +20,42 @@ public class Helen {
       }
     }
 
+    String token = tokens[tokenWithX];
+    double res = Double.MIN_VALUE;
     if (tokenWithX == 4) {
-      String token = tokens[tokenWithX];
-      double first = Double.parseDouble(tokens[0]);
-      double three = Double.parseDouble(tokens[2]);
+      double first = Double.parseDouble(tokens[0]), three = Double.parseDouble(tokens[2]);
       String sign = tokens[1];
-      double res = switch (sign) {
+      res = switch (sign) {
         case "+" -> first + three;
         case "*" -> first * three;
         case "-" -> first - three;
         case "/" -> first / three;
         default -> throw new IllegalStateException();
       };
-      double coeef = token.length() == 1 ? 1 : Double.parseDouble(token.substring(0, token.length() - 1));
-
-      double x = res / coeef;
-      System.out.printf("%s = %.3f\n", variable, x);
     } else if (tokenWithX == 0) {
-      String token = tokens[tokenWithX];
-      double fifth = Double.parseDouble(tokens[4]);
-      double three = Double.parseDouble(tokens[2]);
+      double fifth = Double.parseDouble(tokens[4]), three = Double.parseDouble(tokens[2]);
       String sign = tokens[1];
-      double res = switch (sign) {
+      res = switch (sign) {
         case "+" -> fifth - three;
         case "*" -> fifth / three;
         case "-" -> fifth + three;
         case "/" -> fifth * three;
         default -> throw new IllegalStateException();
       };
-      double coeef = token.length() == 1 ? 1 : Double.parseDouble(token.substring(0, token.length() - 1));
-      double x = res / coeef;
-      System.out.printf("%s = %.3f\n", variable, x);
     } else if (tokenWithX == 2) {
-      String token = tokens[tokenWithX];
-      double first = Double.parseDouble(tokens[0]);
-      double fifth = Double.parseDouble(tokens[4]);
+      double first = Double.parseDouble(tokens[0]), fifth = Double.parseDouble(tokens[4]);
       String sign = tokens[1];
-
-      double res = switch (sign) {
+      res = switch (sign) {
         case "+" -> fifth - first;
         case "*" -> fifth / first;
         case "-" -> -(fifth - first);
         case "/" -> Math.pow(fifth / first, -1);
         default -> throw new IllegalStateException();
       };
-      double coeef = token.length() == 1 ? 1 : Double.parseDouble(token.substring(0, token.length() - 1));
-      double x = res / coeef;
-      System.out.printf("%s = %.3f\n", variable, x);
     }
-
+    double coeef = token.length() == 1 ? 1 : Double.parseDouble(token.substring(0, token.length() - 1));
+    double x = res / coeef;
+    System.out.printf("%s = %.3f\n", variable, x);
   }
 
   public static void main(String... args) throws FileNotFoundException {

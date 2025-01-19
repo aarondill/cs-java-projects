@@ -81,6 +81,7 @@ record Person(String name, int years, List<String> field, List<Person> connectio
     return name.split(" ")[1].compareTo(other.name.split(" ")[1]);
   }
 
+  // Needed to prevent stackoverflow on connections hash
   public int hashCode() {
     return name.hashCode();
   }
