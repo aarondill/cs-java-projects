@@ -1,16 +1,37 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Martyn {
   @SuppressWarnings("unused")
   private static int caseNum = 1;
   private static final String INPUT_FILE = "martyn.dat";
 
+  static final List<Character> SYMBOLS =
+      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/".chars().mapToObj(c -> (char) c).toList();
+
+  // NOTE: only has to handle positive numbers
+  private static String toBase(int n, int b) {
+    List<Character> digits = SYMBOLS.subList(0, b);
+    StringBuilder sb = new StringBuilder();
+    while (n > 0) {
+      sb.append(digits.get(n % b));
+      n /= b;
+    }
+    return sb.reverse().toString();
+  }
+
   private static void each(Scanner scan) {
     // Parse the input:
-    scan.nextLine();
-    // Handle output:
+    int n = Integer.parseInt(scan.nextLine());
+    String res = IntStream.rangeClosed(2, 64).filter(i -> {
+      List<Character> chars = toBase(n, i).chars().mapToObj(c -> (char) c).toList();
+      return chars.reversed().equals(chars);
+    }).mapToObj(String::valueOf).collect(Collectors.joining(", "));
+    System.out.println(res);
   }
 
   public static void main(String... args) throws FileNotFoundException {
