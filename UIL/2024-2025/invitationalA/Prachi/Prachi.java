@@ -82,6 +82,7 @@ class Grid {
       row.stream().map(Space::toChar).forEach(sb::append);
       sb.append('\n');
     }
+    sb.deleteCharAt(sb.length() - 1);
     return sb.toString();
   }
 }

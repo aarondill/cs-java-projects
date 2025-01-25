@@ -48,17 +48,17 @@ public class Juliana {
       int years = scan.nextInt();
       String field = scan.next();
       if (scan.hasNextLine()) scan.nextLine();
-      List<Person> validPeople = find(people.get(name), years, field, Collections.emptySet());
+      Set<Person> validPeople = find(people.get(name), years, field, Collections.emptySet());
       System.out.println(validPeople.stream().filter(p -> p != people.get(name)).sorted().map(Person::name)
           .collect(Collectors.joining(", ")));
     }
   }
 
-  static public List<Person> find(Person p, int years, String field, Set<Person> visited) {
-    if (visited.contains(p)) return Collections.emptyList();
+  static public Set<Person> find(Person p, int years, String field, Set<Person> visited) {
+    if (visited.contains(p)) return Collections.emptySet();
     visited = new HashSet<>(visited);
     visited.add(p);
-    List<Person> valid = new ArrayList<>();
+    Set<Person> valid = new HashSet<>();
     if (p.field().contains(field) && p.years() >= years) valid.add(p);
     for (Person connect : p.connections()) {
       valid.addAll(find(connect, years, field, visited));

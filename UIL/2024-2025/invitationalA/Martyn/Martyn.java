@@ -30,7 +30,7 @@ public class Martyn {
     String res = IntStream.rangeClosed(2, 64).filter(i -> {
       List<Character> chars = toBase(n, i).chars().mapToObj(c -> (char) c).toList();
       return chars.reversed().equals(chars);
-    }).mapToObj(String::valueOf).collect(Collectors.joining(", "));
+    }).mapToObj(String::valueOf).collect(Collectors.joining(", ")).transform(s -> s.isEmpty() ? "None." : s);
     System.out.println(res);
   }
 

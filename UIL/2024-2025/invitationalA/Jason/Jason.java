@@ -1,8 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
@@ -19,11 +17,11 @@ public class Jason {
     List<Integer> averages = new ArrayList<>();
     for (int daysInMonth : daysInMonths) {
       double average = IntStream.range(0, daysInMonth).mapToDouble(n -> scan.nextDouble()).average().getAsDouble();
-      averages.add((int) average);
+      averages.add((int) Math.round(average));
     }
 
     int heighest = averages.stream().max(Integer::compareTo).get();
-    for (int n = heighest; n >= 0; n--) {
+    for (int n = heighest; n > 0; n--) {
       for (int average : averages) {
         if (average >= n) System.out.print("*****");
         else System.out.print("     ");

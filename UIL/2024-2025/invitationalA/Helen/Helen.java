@@ -22,22 +22,12 @@ public class Helen {
 
     String token = tokens[tokenWithX];
     double res = Double.MIN_VALUE;
-    if (tokenWithX == 4) {
-      double first = Double.parseDouble(tokens[0]), three = Double.parseDouble(tokens[2]);
-      String sign = tokens[1];
-      res = switch (sign) {
-        case "+" -> first + three;
-        case "*" -> first * three;
-        case "-" -> first - three;
-        case "/" -> first / three;
-        default -> throw new IllegalStateException();
-      };
-    } else if (tokenWithX == 0) {
+    if (tokenWithX == 0) {
       double fifth = Double.parseDouble(tokens[4]), three = Double.parseDouble(tokens[2]);
       String sign = tokens[1];
       res = switch (sign) {
         case "+" -> fifth - three;
-        case "*" -> fifth / three;
+        case "*" -> (long) fifth / (long) three;
         case "-" -> fifth + three;
         case "/" -> fifth * three;
         default -> throw new IllegalStateException();
@@ -47,9 +37,19 @@ public class Helen {
       String sign = tokens[1];
       res = switch (sign) {
         case "+" -> fifth - first;
-        case "*" -> fifth / first;
-        case "-" -> -(fifth - first);
-        case "/" -> Math.pow(fifth / first, -1);
+        case "*" -> (long) fifth / (long) first;
+        case "-" -> -(fifth + first);
+        case "/" -> (long) first / (long) fifth;
+        default -> throw new IllegalStateException();
+      };
+    } else if (tokenWithX == 4) {
+      double first = Double.parseDouble(tokens[0]), three = Double.parseDouble(tokens[2]);
+      String sign = tokens[1];
+      res = switch (sign) {
+        case "+" -> first + three;
+        case "*" -> first * three;
+        case "-" -> first - three;
+        case "/" -> (long) first / (long) three;
         default -> throw new IllegalStateException();
       };
     }
