@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,30 +31,39 @@ public class Missions {
   private static void each(Scanner scan) {
     // Parse the input:
     List<String> abilities = Arrays.asList(scan.nextLine().split("\\s+"));
-    Set<List<String>> people = combos(abilities);
+    Set<Set<String>> people = combos(abilities);
     System.out.println(people.size());
-    Optional<List<String>> first = people.stream().sorted((a, b) -> ("" + a).compareTo("" + b)).findFirst(); // find alphabetically first list
+    Optional<Set<String>> first = people.stream().sorted((a, b) -> ("" + a).compareTo("" + b)).findFirst(); // find alphabetically first list
     if (!first.isPresent()) System.out.println();
     else System.out.println(String.join(" ", first.get()));
   }
 
-  public static Set<List<String>> combos(List<String> abilities) {
-    return combos(abilities, new ArrayList<>());
+  public static Set<Set<String>> combos(List<String> abilities) {
+    return combos(abilities, new LinkedHashSet<>());
   }
 
   // Find all possible combinations of people with abilities
-  public static Set<List<String>> combos(List<String> abilities, List<String> current) {
+  public static Set<Set<String>> combos(List<String> abilities, Set<String> current) {
     if (current.size() == abilities.size()) {
-      return Set.of(new ArrayList<>(current));
+      return Set.of(new LinkedHashSet<>(current));
     }
 
-    Set<List<String>> combos = new HashSet<>();
+    Set<Set<String>> combos = new HashSet<>();
     String ability = abilities.get(current.size());
     for (String person : people.keySet()) {
       if (!people.get(person).contains(ability)) continue;
       if (current.contains(person)) continue; // no duplicates!
       current.add(person);
-      combos.addAll(combos(abilities, current));
+      Set<Set<String>> res = (combos(abilities, current));
+      for (Set<String> combo : res) {
+        if (combos.contains(combo)) {
+          Set<String> o = (combos.stream().filter(c -> c.equals(combo)).findFirst().get());
+          if (combo.toString().compareTo(o.toString()) < 0) {
+            combos.remove(combo);
+            combos.add(combo);
+          }
+        } else combos.add(combo);
+      }
       current.remove(person);
     }
     return combos;
