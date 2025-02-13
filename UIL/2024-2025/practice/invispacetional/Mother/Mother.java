@@ -8,9 +8,21 @@ public class Mother {
   private static final String INPUT_FILE = "mother.dat";
 
   private static void each(Scanner scan) {
-    // Parse the input:
-    scan.nextLine();
-    // Handle output:
+    int cycles = Integer.parseInt(scan.nextLine(), 10);
+    long[] masters = new long[] {0, 0, 0, 0, 0};
+    long sentinels = 0;
+
+    for (int i = 0; i < cycles; i++) {
+      masters[0] = masters[2] + 1; // reproducers + mother creates
+      // Each mold ages by one (except the oldest)
+      for (int j = masters.length - 1; j >= 1; j--) {
+        masters[j] += masters[j - 1];
+        masters[j - 1] = 0;
+      }
+      // Oldest molds create sentinels
+      sentinels += masters[masters.length - 1];
+    }
+    System.out.println(sentinels);
   }
 
   public static void main(String... args) throws FileNotFoundException {
