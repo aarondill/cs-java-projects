@@ -22,7 +22,7 @@ public class Missions {
       "Storm", Arrays.asList("Flight,Electric,Cold".split(",")), //
       "Banshee", Arrays.asList("Flight,Energy-Blasts".split(",")), //
       "Cyclops", Arrays.asList("Hand-to-Hand,Energy-Blasts".split(",")), //
-      "Pheonix", Arrays.asList("Flight,Telekinesis,Telepathy,Energy-Blasts".split(",")), //
+      "Phoenix", Arrays.asList("Flight,Telekinesis,Telepathy,Energy-Blasts".split(",")), //
       "Iceman", Arrays.asList("Cold,Invulnerability".split(",")), //
       "Beast", Arrays.asList("Strength,Agility".split(",")), //
       "Angel", Arrays.asList("Flight,Swords".split(","))//
