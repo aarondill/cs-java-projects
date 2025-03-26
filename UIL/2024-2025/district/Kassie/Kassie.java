@@ -9,7 +9,18 @@ public class Kassie {
 
   private static void each(Scanner scan) {
     // Parse the input:
-    scan.nextLine();
+    String[] ops = scan.nextLine().split(" ");
+    int a = Integer.parseInt(ops[0]);
+    char op = ops[1].charAt(0);
+    int b = Integer.parseInt(ops[2]);
+    int res = switch (op) {
+      case '-' -> a - b;
+      case '+' -> a + b;
+      case '*' -> a * b;
+      case '/' -> a / b;
+      default -> throw new IllegalAccessError();
+    };
+    System.out.println(res);
     // Handle output:
   }
 

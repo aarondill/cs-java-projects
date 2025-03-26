@@ -9,8 +9,17 @@ public class Dean {
 
   private static void each(Scanner scan) {
     // Parse the input:
-    scan.nextLine();
-    // Handle output:
+    String s = scan.nextLine();
+    int num = 0;
+    for (int i = 1; i <= s.length(); i++) {
+      for (int j = 0; j <= s.length() - i; j++) {
+        String sub = s.substring(j, j + i);
+        if (new StringBuilder(sub).reverse().toString().equals(sub)) {
+          num++;
+        }
+      }
+    }
+    System.out.println(num);
   }
 
   public static void main(String... args) throws FileNotFoundException {

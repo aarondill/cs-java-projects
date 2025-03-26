@@ -1,6 +1,10 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 public class Jacinta {
   @SuppressWarnings("unused")
@@ -8,9 +12,23 @@ public class Jacinta {
   private static final String INPUT_FILE = "jacinta.dat";
 
   private static void each(Scanner scan) {
-    // Parse the input:
-    scan.nextLine();
-    // Handle output:
+    List<Long> nums = new ArrayList<>(
+        Arrays.stream(scan.nextLine().split(" ")).filter(Predicate.not(String::isEmpty)).map(Long::parseLong).toList());
+    nums.sort(null);
+    nums = nums.reversed();
+    long sumOne = 0, sumTwo = 0;
+    if (nums.size() > 1) {
+      sumOne = nums.removeFirst();
+      sumTwo = nums.removeFirst();
+      while (!nums.isEmpty()) {
+        if (sumOne <= sumTwo) sumOne += nums.removeFirst();
+        else sumTwo += nums.removeFirst();
+      }
+    }
+    if (nums.size() == 1) sumOne = nums.removeFirst();
+    if (sumOne == sumTwo) System.out.println("Job secure.");
+    else System.out.println("Indeed here I come.");
+
   }
 
   public static void main(String... args) throws FileNotFoundException {
