@@ -20,8 +20,9 @@ public class Bellman {
     // Keep relaxing edges until we have no more new edges (i=0, size=1; i=1, size>1; i=V-1, size=V)
     // Run until <= size to detect negative cycles
     for (int i = 0; i <= distances.size(); i++) {
-      HashSet<Node<T>> copy = new HashSet<>(distances.keySet()); // copy to avoid concurrent modification
-      for (var from : copy) { // seen nodes
+      boolean changed = false;
+      // copy to avoid concurrent modification
+      for (var from : new HashSet<>(distances.keySet())) { // seen nodes
         for (Node<T> to : from.edges.keySet()) {
           int newDistance = distances.get(from) + from.edges.get(to);
           if (newDistance < distances.getOrDefault(to, Integer.MAX_VALUE)) {
@@ -29,10 +30,11 @@ public class Bellman {
             if (i == distances.size()) throw new IllegalStateException("Negative cycle detected");
             distances.put(to, newDistance);
             prev.put(to, from);
+            changed = true;
           }
         }
       }
-      if (copy.equals(distances.keySet())) break; // no changes, we're done!
+      if (!changed) break; // no changes, we're done!
     }
     return new Result<>(distances, prev);
   }
@@ -47,10 +49,10 @@ public class Bellman {
     var f = new Node<>("F");
 
     // Connect nodes
-    a.addEdge(c, 1);
-    c.addEdge(e, -2);
+    a.addEdge(c, -1);
+    c.addEdge(e, -20);
     e.addEdge(a, 1);
-    a.addEdge(b, 5);
+    a.addEdge(b, 6);
     b.addEdge(d, 2);
 
     // Create graph
