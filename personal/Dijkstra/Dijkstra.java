@@ -7,38 +7,6 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
-// A node with a value and neighbors.
-class Node<T> {
-  // The value of the node. This is immutable after construction.
-  private T value;
-  // A map of neighbors and their weights. This may only be added to.
-  private Map<Node<T>, Integer> neighbors = new HashMap<>();
-
-  public Node(T value) {
-    this.value = value;
-  }
-
-  public T getValue() {
-    return value;
-  }
-
-  // Adds a neighbor to the node and returns this node (for chaining).
-  public Node<T> addNeighbor(Node<T> neighbor, int weight) {
-    neighbors.put(neighbor, weight);
-    return this;
-  }
-
-  // Returns an immutable map of neighbors and their weights.
-  public Map<Node<T>, Integer> getNeighbors() {
-    return Collections.unmodifiableMap(neighbors);
-  }
-
-  @Override
-  public String toString() {
-    return "Node[" + value + "]";
-  }
-}
-
 public class Dijkstra {
   // A simple class to hold the result of the Dijkstra algorithm.
   public final static record Result<T>(Map<Node<T>, Integer> distances, Map<Node<T>, Node<T>> prev) {}
@@ -119,5 +87,37 @@ public class Dijkstra {
     System.out.println("Shortest distance from A to E:");
     System.out.println(path.reversed().stream().map(Node::toString).collect(Collectors.joining(" ")));
     System.out.println("Total cost: " + result.distances().get(e));
+  }
+}
+
+// A node with a value and neighbors.
+class Node<T> {
+  // The value of the node. This is immutable after construction.
+  private T value;
+  // A map of neighbors and their weights. This may only be added to.
+  private Map<Node<T>, Integer> neighbors = new HashMap<>();
+
+  public Node(T value) {
+    this.value = value;
+  }
+
+  public T getValue() {
+    return value;
+  }
+
+  // Adds a neighbor to the node and returns this node (for chaining).
+  public Node<T> addNeighbor(Node<T> neighbor, int weight) {
+    neighbors.put(neighbor, weight);
+    return this;
+  }
+
+  // Returns an immutable map of neighbors and their weights.
+  public Map<Node<T>, Integer> getNeighbors() {
+    return Collections.unmodifiableMap(neighbors);
+  }
+
+  @Override
+  public String toString() {
+    return "Node[" + value + "]";
   }
 }
