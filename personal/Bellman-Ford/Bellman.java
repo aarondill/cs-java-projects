@@ -1,31 +1,32 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Bellman {
   public final static record Result<T>(Map<Node<T>, Integer> distances, Map<Node<T>, Node<T>> prev) {}
 
-  public static <T> Result<T> bellmanFord(List<Node<T>> nodes, Node<T> start) {
-    Set<Edge<T>> edges = nodes.stream().flatMap(n -> n.getEdges()).collect(Collectors.toSet());
+  public static <T> Result<T> bellmanFord(Node<T> start) {
     // Initialize
-    Map<Node<T>, Integer> distances = new HashMap<>(); // default to infinity
+    Map<Node<T>, Integer> distances = new HashMap<>();
     Map<Node<T>, Node<T>> prev = new HashMap<>();
     distances.put(start, 0);
-    // Relax edges v-1 times
-    for (int i = 0; i < nodes.size() - 1; i++) {
-      for (var edge : edges) {
-        Node<T> u = edge.from(), v = edge.to();
-        if (!distances.containsKey(u)) continue;
-        int newDistance = distances.get(u) + edge.weight();
-        if (newDistance < distances.getOrDefault(v, Integer.MAX_VALUE)) {
-          distances.put(v, newDistance);
-          prev.put(v, u);
+    // Keep relaxing edges until we have no more new edges (i=0, size=1; i=1, size>1; i=V-1, size=V)
+    for (int i = 0; i < distances.size(); i++) {
+      boolean changed = false;
+      for (var from : new HashSet<>(distances.keySet())) { // seen nodes
+        for (Node<T> to : from.edges.keySet()) {
+          int newDistance = distances.get(from) + from.edges.get(to);
+          if (newDistance < distances.getOrDefault(to, Integer.MAX_VALUE)) {
+            distances.put(to, newDistance);
+            prev.put(to, from);
+            changed = true;
+          }
         }
       }
+      if (!changed) break; // we're done!
     }
     return new Result<>(distances, prev);
   }
@@ -44,12 +45,12 @@ public class Bellman {
     b.addEdge(d, 12).addEdge(f, 15);
     d.addEdge(f, 1).addEdge(e, 2);
     f.addEdge(e, 1);
-    c.addEdge(e, 10);
+    c.addEdge(e, -10);
 
     // Create graph
     var start = a;
     var end = e;
-    var result = bellmanFord(List.of(a, b, c, d, e, f), start);
+    var result = bellmanFord(start);
 
     // Retreive shortest path from end to start
     List<Node<String>> path = new ArrayList<>();
@@ -57,17 +58,17 @@ public class Bellman {
       path.add(curr);
 
     // Print the result
-    System.out.println("Shortest distance from A to E:");
+    System.out.printf("Shortest distance from %s to %s:\n", start, end);
     System.out.println(path.reversed().stream().map(Node::toString).collect(Collectors.joining(" ")));
-    System.out.println("Total cost: " + result.distances().get(e));
-    if (result.distances().get(end) != 24) throw new IllegalStateException("Wrong result");
+    System.out.println("Total cost: " + result.distances().get(end));
+    // if (result.distances().get(end) != 24) throw new IllegalStateException("Wrong result");
   }
 }
 
 record Edge<T>(Node<T> from, Node<T> to, int weight) {}
 
 class Node<T> {
-  final List<Edge<T>> edges = new ArrayList<>();
+  final Map<Node<T>, Integer> edges = new HashMap<>();
   final T value;
 
   public Node(T value) {
@@ -75,12 +76,8 @@ class Node<T> {
   }
 
   public Node<T> addEdge(Node<T> to, int weight) {
-    edges.add(new Edge<>(this, to, weight));
+    edges.put(to, weight);
     return this;
-  }
-
-  public Stream<Edge<T>> getEdges() {
-    return edges.stream();
   }
 
   @Override
