@@ -1,0 +1,3 @@
+[submodule "personal/Tree"]
+	path = personal/Tree
+	url = https://github.com/aarondill/Tree.git
