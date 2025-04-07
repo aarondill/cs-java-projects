@@ -1,3 +1,9 @@
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.invoke.MethodHandles;
+import java.util.Properties;
+
 public class {{ $ROOT }} {
   final static public String VERSION = version();
 
