@@ -26,7 +26,7 @@ public class Jacinta {
       }
     }
     if (nums.size() == 1) sumOne = nums.removeFirst();
-    if (sumOne == sumTwo) System.out.println("Job secure.");
+    if (sumOne == sumTwo) System.out.println("Job secured.");
     else System.out.println("Indeed here I come.");
 
   }
