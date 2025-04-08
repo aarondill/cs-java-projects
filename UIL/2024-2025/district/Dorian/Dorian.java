@@ -12,21 +12,18 @@ public class Dorian {
     // Parse the input:
     String[] words = scan.nextLine().splitWithDelimiters("\\s+", 0);
 
-    int lineLen = 0;
     String line = "";
     // Wrap input to 89 characters; indent each following line by 6 spaces.
     for (String word : words) {
       boolean isWhitespace = word.matches("\\s+");
-      if (lineLen + word.length() > WIDTH) { // If the line is too long, move to the next line.
+      if (line.length() + word.length() > WIDTH) { // If the line is too long, move to the next line.
         System.out.println(line);
-        lineLen = INDENT;
         line = " ".repeat(INDENT);
       } else if (isWhitespace) { // If the line isn't too long, print the whitespace (may result in trailing spaces, this is okay).
         if (line.isBlank()) continue;
         line += word;
       }
       if (!isWhitespace) line += word; // we always print the word
-      lineLen += word.length(); // we always print the word
     }
     if (!line.isBlank()) System.out.println(line); // print the last line
   }
