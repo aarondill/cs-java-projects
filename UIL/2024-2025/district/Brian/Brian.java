@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -16,11 +15,12 @@ public class Brian {
 
   private static void each(Scanner scan) {
     // Parse the input:
-    int nodsafndsaelkfn = scan.nextInt();
+    int numNodes = scan.nextInt(); // number of nodes
     int numCons = scan.nextInt();
     scan.nextLine();
-    Map<String, Node> nodes = new HashMap<>();
+    Map<String, Node> nodes = new HashMap<>(numNodes);
     List<String[]> lines = new ArrayList<>();
+    // Create nodes by names (so we can look them up and connect them later)
     for (int i = 0; i < numCons; i++) {
       String[] line = scan.nextLine().split(" ");
       lines.add(line);
@@ -30,48 +30,42 @@ public class Brian {
       nodes.computeIfAbsent(n2, Node::new);
     }
 
-    List<Connection> allCon = new ArrayList<>();
+    // Get each of the connections and connect them
     for (String[] line : lines) {
-      Node one = nodes.get(line[0]);
-      Node two = nodes.get(line[1]);
+      Node one = nodes.get(line[0]), two = nodes.get(line[1]);
       int weight = Integer.parseInt(line[2]);
-      Connection c = new Connection(one, two, weight);
-      allCon.add(c);
-      one.cons().add(c);
-      two.cons().add(c); // NOTE: bidirectional
-    }
-    int minCon = allCon.stream().mapToInt(c -> c.weight).min().orElse(0);
-    if (minCon < 0) {
-      allCon.stream().forEach(c -> c.weight += Math.abs(minCon));
+      one.add(two, weight);
+      // NOTE: **NOT** bidirectional, the quest doesn't make this clear, but
+      // the correct answer is only gotten if you don't treat it as
+      // bidirectional
     }
 
+    // Get the start and end nodes
     Node start = nodes.computeIfAbsent(scan.next(), Node::new);
     Node end = nodes.computeIfAbsent(scan.next(), Node::new);
     scan.nextLine();
 
-    Map<Node, Node> prev = dijkstra(start, end);
-
-    if (minCon < 0) {
-      allCon.stream().forEach(c -> c.weight -= Math.abs(minCon));
-    }
-    int dist = 0;
-    Node c = end;
-    while (c != null) {
-
-      c = prev.get(c);
-    }
-    System.out.println(prev);
+    Map<Node, Integer> dist = bellmanFord(start);
+    if (dist == null) System.out.println("Take as long as you need.");
+    else System.out.println(dist.get(end));
   }
 
-  public static Map<Node, Node> dijkstra(Node start, Node end) {
-    Map<Node, Integer> distance = new HashMap<>();
-    Map<Node, Node> prev = new HashMap<>();
-    PriorityQueue<Node> pq = new PriorityQueue<>();
-    pq.add(start);
-    distance.put(start, 0);
-    while (pq.isEmpty()) {
+  public static Map<Node, Integer> bellmanFord(Node start) {
+    Map<Node, Integer> dist = new HashMap<>();
+    dist.put(start, 0);
+    for (int i = 0; i <= dist.size(); i++) { // loop V times
+      // copy to avoid concurrent modification
+      for (Node from : new HashSet<>(dist.keySet())) { // each seen node
+        for (Node to : from.cons().keySet()) { // contract each edge
+          int newDist = dist.get(from) + from.cons().get(to);
+          if (newDist < dist.getOrDefault(to, Integer.MAX_VALUE)) {
+            if (i == dist.size()) return null; // negative cycle
+            dist.put(to, newDist);
+          }
+        }
+      }
     }
-
+    return dist;
   }
 
   public static void main(String... args) throws FileNotFoundException {
@@ -86,21 +80,9 @@ public class Brian {
   }
 }
 
-class Connection {
-  Node one;
-  Node two;
-  int weight;
-
-  public Connection(Node one, Node two, int weight) {
-    this.one = one;
-    this.two = two;
-    this.weight = weight;
-  }
-}
-
-record Node(Set<Connection> cons, String name) {
+record Node(Map<Node, Integer> cons, String name) {
   public Node(String n) {
-    this(new HashSet<>(), n);
+    this(new HashMap<>(), n);
   }
 
   public boolean equals(Object o) {
@@ -108,7 +90,15 @@ record Node(Set<Connection> cons, String name) {
     return n.name == this.name;
   }
 
+  public void add(Node n, int weight) {
+    cons.put(n, weight);
+  }
+
   public int hashCode() {
     return name.hashCode();
+  }
+
+  public String toString() {
+    return name;
   }
 }
