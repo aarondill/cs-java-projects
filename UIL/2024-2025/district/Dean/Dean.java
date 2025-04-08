@@ -1,8 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
@@ -32,17 +30,17 @@ public class Dean {
    * longer a palindrome.
    *
    * @param s the string to count palindromes in
-   * @param j the index of the last character in the window (exclusive)
    * @return the number of palindromes in the given string
    */
   public static long countPalindromes(List<Character> s, int len) {
-    long count = 0;
-    for (int idx = 0; idx + len <= s.size(); idx++) { // for each window of length len
-      List<Character> win = s.subList(idx, idx + len); // window from idx of length len
-      if (!win.equals(win.reversed())) continue;
-      count += countExpandingPalindromes(s, idx, idx + len); // expand the window as long as we can, this counts the original window;
-    }
-    return count;
+    // for each window of length len
+    return IntStream.rangeClosed(0, s.size() - len).parallel().filter(idx -> {
+      final int end = idx + len - 1;
+      for (int i = idx; i < idx + len; i++) {
+        if (s.get(i) != s.get(end - i)) return false;
+      }
+      return true;
+    }).mapToLong(idx -> countExpandingPalindromes(s, idx, idx + len)).sum();
   }
 
   public static long countPalindromes(String str) {
