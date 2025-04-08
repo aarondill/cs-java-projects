@@ -8,7 +8,8 @@ public class {{ $BASENAME }} {
   private static int caseNum = 1;
   private static final String INPUT_FILE = "{{ ${BASENAME,} }}.dat";
 
-  private static void each(Scanner scan) {
+  // The constructor is called on each case
+  private {{$BASENAME}}(Scanner scan) {
     // Parse the input:
     scan.nextLine();
     // Handle output:
@@ -18,7 +19,7 @@ public class {{ $BASENAME }} {
     try (Scanner scan = new Scanner(new File(INPUT_FILE))) {
       int dataCount = Integer.parseInt(scan.nextLine(), 10);
       for (int i = 0; i < dataCount; i++, caseNum++)
-        each(scan);
+        new {{$BASENAME}}(scan);
     } catch (FileNotFoundException e) {
       System.err.println("Could not find file: " + INPUT_FILE);
       throw e;
