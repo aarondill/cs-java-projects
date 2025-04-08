@@ -17,7 +17,6 @@ public class Dorian {
     // Wrap input to 89 characters; indent each following line by 6 spaces.
     for (String word : words) {
       boolean isWhitespace = word.matches("\\s+");
-      if (!isWhitespace) line += word; // we always print the word
       if (lineLen + word.length() > WIDTH) { // If the line is too long, move to the next line.
         System.out.println(line);
         lineLen = INDENT;
@@ -26,6 +25,7 @@ public class Dorian {
         if (line.isBlank()) continue;
         line += word;
       }
+      if (!isWhitespace) line += word; // we always print the word
       lineLen += word.length(); // we always print the word
     }
     if (!line.isBlank()) System.out.println(line); // print the last line
