@@ -1,40 +1,34 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Dorian {
-  @SuppressWarnings("unused")
-  private static int caseNum = 1;
   private static final String INPUT_FILE = "dorian.dat";
+
+  final static int WIDTH = 89;
+  final static int INDENT = 6;
 
   private static void each(Scanner scan) {
     // Parse the input:
-    String s = scan.nextLine();
-    int lineLen = 0;
-    ArrayList<Integer> splitPos = new ArrayList<>();
-    splitPos.add(0);
-    for (int i = 0; i < s.length() - 1; i++) {
-      String two = s.substring(i, i + 2);
-      if (two.matches("\\w\\s")) splitPos.add(i + 1);
-    }
-    splitPos.add(s.length());
-    ArrayList<String> output = new ArrayList<>();
-    for (int i = 0; i < splitPos.size() - 1; i++) {
-      output.add(s.substring(splitPos.get(i), splitPos.get(i + 1)));
-    }
-    for (String o : output) {
-      lineLen += o.length();
-      if (lineLen > 89) {
-        System.out.print("\n      ");
-        lineLen = 6;
-        o = o.stripLeading();
-        lineLen += o.length();
-      }
-      System.out.print(o);
-    }
+    String[] words = scan.nextLine().splitWithDelimiters("\\s+", 0);
 
-    System.out.println();
+    int lineLen = 0;
+    String line = "";
+    // Wrap input to 89 characters; indent each following line by 6 spaces.
+    for (String word : words) {
+      boolean isWhitespace = word.matches("\\s+");
+      if (!isWhitespace) line += word; // we always print the word
+      if (lineLen + word.length() > WIDTH) { // If the line is too long, move to the next line.
+        System.out.println(line);
+        lineLen = INDENT;
+        line = " ".repeat(INDENT);
+      } else if (isWhitespace) { // If the line isn't too long, print the whitespace (may result in trailing spaces, this is okay).
+        if (line.isBlank()) continue;
+        line += word;
+      }
+      lineLen += word.length(); // we always print the word
+    }
+    if (!line.isBlank()) System.out.println(line); // print the last line
   }
 
   public static void main(String... args) throws FileNotFoundException {
