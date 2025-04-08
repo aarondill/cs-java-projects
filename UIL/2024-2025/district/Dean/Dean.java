@@ -11,15 +11,15 @@ public class Dean {
 
   // Takes a window [i, j) and expands it [i-1, j+1), [i-2, j+2), etc, until it stops finding palindromes
   // Assumes the window passed in is a palindrome
-  public static long countExpandingPalindromes(List<Character> s, int i, int j) {
+  public static long countExpandingPalindromes(String s, int i, int j) {
     long count = 0;
     // we're *still* a palindrome iff the new first and last characters are the same
     // PERF: This is the most important optimization! If you try to expand the
     // window, then test if it's a palindrome, it *will* timeout. This is
     // because we're checking the entire string every time.
-    while (s.get(i).equals(s.get(j - 1))) {
+    while (s.charAt(i) == s.charAt(j - 1)) {
       count++;
-      if (--i < 0 || ++j > s.size()) break;
+      if (--i < 0 || ++j > s.length()) break;
     }
     return count;
   }
@@ -32,20 +32,20 @@ public class Dean {
    * @param s the string to count palindromes in
    * @return the number of palindromes in the given string
    */
-  public static long countPalindromes(List<Character> s, int len) {
+  public static long countPalindromes(String s, int len) {
     // for each window of length len
-    return IntStream.rangeClosed(0, s.size() - len).parallel().filter(idx -> {
+    return IntStream.rangeClosed(0, s.length() - len).parallel().filter(idx -> {
+      // check if the window is a palindrome
       final int end = idx + len - 1;
       for (int i = idx; i < idx + len; i++) {
-        if (s.get(i) != s.get(end - i)) return false;
+        if (s.charAt(i) != s.charAt(end - i)) return false;
       }
       return true;
     }).mapToLong(idx -> countExpandingPalindromes(s, idx, idx + len)).sum();
   }
 
-  public static long countPalindromes(String str) {
+  public static long countPalindromes(String s) {
     // This is more efficient because we can use subList instead of copying the substring
-    List<Character> s = str.chars().mapToObj(c -> (char) c).toList();
     return countPalindromes(s, 2) + countPalindromes(s, 3);
   }
 
