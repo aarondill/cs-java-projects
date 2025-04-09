@@ -8,9 +8,7 @@ public class Logistics {
   private static final String INPUT_FILE = "logistics.dat";
 
   private static void each(Scanner scan) {
-    // Parse the input:
-    scan.nextLine();
-    // Handle output:
+      throw new UnsupportedOperationException("Not Attempted"); /* TODO: Delete this line */
   }
 
   public static void main(String... args) throws FileNotFoundException {
