@@ -10,9 +10,7 @@ public class {{ $BASENAME }} {
 
   // The constructor is called on each case
   private {{$BASENAME}}(Scanner scan) {
-    // Parse the input:
-    scan.nextLine();
-    // Handle output:
+    throw new UnsupportedOperationException("Not Attempted"); /* TODO: Delete this line */
   }
 
   public static void main(String... args) throws FileNotFoundException {
