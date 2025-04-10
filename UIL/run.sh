@@ -46,7 +46,8 @@ cp -a -- "${outputfile[0]}" .
 log "Data file: ${datafile:-(none)}"
 log "Output file: $outputfile"
 
-java "$target" | tee -- "$name.out.real"
+# NOTE: time outputs to stderr
+time java "$target" | tee -- "$name.out.real"
 # Remove leading and trailing empty lines
 sed -i -e :a -e '/./,$!d;/^\n*$/{$d;N;};/\n$/ba' "$name.out.real"
 
