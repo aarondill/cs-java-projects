@@ -28,11 +28,14 @@ shopt -s nocaseglob # case-insensitive globbing
 datafile=("$judge_dir"/*Judge*Dat*/"$name.dat")
 outputfile=("$judge_dir"/*Judge*Out*/"$name.out")
 shopt -u nocaseglob
-[ -n "$datafile" ] && [ -n "$outputfile" ] || abort "No data or no output file found"
-[ "${#datafile[@]}" -eq 1 ] || abort "Multiple data files found: ${datafile[@]}"
+[ "${#outputfile[@]}" -gt 0 ] || abort "No output file found"
 [ "${#outputfile[@]}" -eq 1 ] || abort "Multiple output files found: ${outputfile[@]}"
-
-cp -a -- "$datafile" "$outputfile" .
+if [ "${#datafile[@]}" -gt 0 ]; then
+  [ "${#datafile[@]}" -eq 1 ] || abort "Multiple data files found: ${datafile[@]}"
+  cp -a -- "${datafile[0]}" "$outputfile" .
+else
+  err "Warning: No data file found"
+fi
 java "$target" | tee -- "$name.out.real"
 # Remove leading and trailing empty lines
 sed -i -e :a -e '/./,$!d;/^\n*$/{$d;N;};/\n$/ba' "$name.out.real"
