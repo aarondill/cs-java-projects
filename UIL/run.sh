@@ -4,6 +4,13 @@ shopt -s nullglob dotglob globstar
 log() { printf '%s\n' "$@" || true; }
 err() { printf '%s\n' "$@" >&2 || true; }
 abort() { err "$1" && exit "${2:-1}"; }
+pager() {
+  if command -v bat &>/dev/null; then
+    bat --style=-header # Don't display if empty input
+  else
+    less -R
+  fi
+}
 # Usage: run.sh judge_dir/ File.java
 # Judge dir should be a directory containing a file named "JudgeData/file.dat" and a file named "JudgeOutput/file.out"
 judge_dir=$(realpath -- "$1")
@@ -32,14 +39,16 @@ shopt -u nocaseglob
 [ "${#outputfile[@]}" -eq 1 ] || abort "Multiple output files found: ${outputfile[@]}"
 if [ "${#datafile[@]}" -gt 0 ]; then
   [ "${#datafile[@]}" -eq 1 ] || abort "Multiple data files found: ${datafile[@]}"
-  cp -a -- "${datafile[0]}" "$outputfile" .
-else
-  err "Warning: No data file found"
+  cp -a -- "${datafile[0]}" .
 fi
+cp -a -- "${outputfile[0]}" .
+log "Data file: ${datafile:-(none)}"
+log "Output file: $outputfile"
+
 java "$target" | tee -- "$name.out.real"
 # Remove leading and trailing empty lines
 sed -i -e :a -e '/./,$!d;/^\n*$/{$d;N;};/\n$/ba' "$name.out.real"
 
 ok=0
-diff -u -Z --strip-trailing-cr -- "$name.out.real" "$name.out" | bat || ok=${PIPESTATUS[0]}
+diff -u -Z --strip-trailing-cr -- "$name.out.real" "$name.out" | pager || ok=${PIPESTATUS[0]}
 [ "$ok" -eq 0 ] && log "PASS" || log "FAIL"
