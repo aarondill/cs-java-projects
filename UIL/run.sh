@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euC -o pipefail
 shopt -s nullglob dotglob globstar
+GREEN=$'\033[0;32m' RED=$'\033[0;31m' NC=$'\033[0m'
 log() { printf '%s\n' "$@" || true; }
 err() { printf '%s\n' "$@" >&2 || true; }
 abort() { err "$1" && exit "${2:-1}"; }
@@ -51,4 +52,4 @@ sed -i -e :a -e '/./,$!d;/^\n*$/{$d;N;};/\n$/ba' "$name.out.real"
 
 ok=0
 diff -u -Z --strip-trailing-cr -- "$name.out.real" "$name.out" | pager || ok=${PIPESTATUS[0]}
-[ "$ok" -eq 0 ] && log "PASS" || log "FAIL"
+[ "$ok" -eq 0 ] && log "${GREEN}PASS${NC}" || log "${RED}FAIL${NC}"
