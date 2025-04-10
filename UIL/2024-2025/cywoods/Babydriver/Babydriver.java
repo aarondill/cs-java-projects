@@ -8,30 +8,6 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
-record Point(int x, int y) {}
-
-enum Type {
-  ROAD, EXIT, POLICE;
-
-  public static Type fromChar(char c) {
-    return switch (c) {
-      case '-' -> ROAD;
-      case 'E' -> EXIT;
-      case 'P' -> POLICE;
-      default -> throw new IllegalArgumentException("Invalid type: " + c);
-    };
-  }
-}
-
-class Node {
-  Type type;
-  List<Node> neighbors = new ArrayList<>();
-
-  public Node(Type type) {
-    this.type = type;
-  }
-
-}
 
 public class Babydriver {
   @SuppressWarnings("unused")
@@ -110,4 +86,28 @@ public class Babydriver {
       throw e;
     }
   }
+}
+record Point(int x, int y) {}
+
+enum Type {
+  ROAD, EXIT, POLICE;
+
+  public static Type fromChar(char c) {
+    return switch (c) {
+      case '-' -> ROAD;
+      case 'E' -> EXIT;
+      case 'P' -> POLICE;
+      default -> throw new IllegalArgumentException("Invalid type: " + c);
+    };
+  }
+}
+
+class Node {
+  Type type;
+  List<Node> neighbors = new ArrayList<>();
+
+  public Node(Type type) {
+    this.type = type;
+  }
+
 }
