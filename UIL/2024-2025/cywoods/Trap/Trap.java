@@ -8,66 +8,82 @@ public class Trap {
   private static int caseNum = 1;
   private static final String INPUT_FILE = "trap.dat";
 
-  private static void each(Scanner scan) {
-    Point start, center;
-    PolarGraph<Tile> polarGraph;
-    char direction;
-    int intensity;
-    {
-      int width = scan.nextInt();
-      int height = scan.nextInt();
-      int starty = scan.nextInt();
-      int startx = scan.nextInt();
-      scan.nextLine();
-      direction = scan.next().charAt(0);
-      intensity = scan.nextInt(); // number of times it rotates each second
-      scan.nextLine();
-      Tile[][] graph = new Tile[height][width];
-      for (int y = 0; y < height; y++) {
-        String line = scan.nextLine();
-        for (int x = 0; x < width; x++) {
-          graph[y][x] = Tile.fromChar(line.charAt(x));
-        }
-      }
-      start = new Point(startx, starty);
-      center = new Point(width / 2, height / 2);
-      polarGraph = new PolarGraph<>(graph, Direction.EAST);
-    }
-    Point p = start;
-    Direction toCenter = start.directionTo(center);
-    System.out.println(p);
-    loop: while (!p.equals(center)) {
-      for (int i = 0; i < intensity; i++) {
-        if (direction == 'L') polarGraph.counterClockwise();
-        else polarGraph.clockwise();
-      }
+  // Returns the last tile that can be reached from the start point
+  private Tile canReachEnd(Point p, Direction toCenter) {
+    while (p.get(graph) == Tile.EMPTY) {
+      rotateGrid(graph, intensity);
       p = p.move(toCenter);
-      System.out.println(p);
-      switch (polarGraph.get(p)) {
-        case EMPTY -> { // noop
-        }
-        case TRAP, VOLCANO -> {
-          System.out.println("Trap at " + p);
-          break loop;
-        }
-        case END -> {
-          break loop;
-        }
+    }
+    return p.get(graph);
+  }
+
+  Tile[][] graph;
+  int intensity;
+
+  private Trap(Scanner scan) {
+    int height = scan.nextInt(), width = scan.nextInt();
+    int starty = scan.nextInt(), startx = scan.nextInt();
+    scan.nextLine();
+    char direction = scan.next().charAt(0);
+    intensity = scan.nextInt(); // number of times it rotates each second
+    scan.nextLine();
+    // normalize for rotateGrid
+    if (direction == 'R') intensity = -intensity;
+    else if (direction != 'L') throw new IllegalArgumentException("Invalid direction: " + direction);
+
+    graph = new Tile[height][width];
+    for (int y = 0; y < height; y++) {
+      String line = scan.nextLine();
+      for (int x = 0; x < width; x++) {
+        graph[y][x] = Tile.fromChar(line.charAt(x));
       }
     }
-    Tile last = polarGraph.get(p);
-    if (last == Tile.END) System.out.println("New candies are mine.");
-    else if (last == Tile.TRAP) System.out.println("Trapped.");
-    else System.out.println("Goodbye world.");
-    System.out.println();
+    Point start = new Point(startx, starty), center = new Point(width / 2, height / 2);
+    Tile last = canReachEnd(start, start.directionTo(center));
+    System.out.println(switch (last) {
+      case END -> "New candies are mine.";
+      case TRAP -> "Trapped.";
+      case VOLCANO -> "Goodbye world.";
+      default -> throw new IllegalStateException("Unexpected tile: " + last);
+    });
+  }
 
+  // Rotates the grid counterclockwise k times in place; Pass a negative k to rotate clockwise
+  // Source: https://blog.heycoach.in/cyclically-rotating-a-grid-solution-in-java/
+  public static <T> T[][] rotateGrid(T[][] grid, int k) {
+    final int height = grid.length, width = grid[0].length;
+    // The window of the edges we're rotating
+    int top = 0, left = 0, bottom = height - 1, right = width - 1;
+    if (k == 0) return grid; // No rotation needed
+    while (top < bottom && left < right) {
+      final int elementInThisLayer = 2 * (bottom - top + 1) + 2 * (right - left + 1) - 4;
+      final int netRotations = (elementInThisLayer + (k % elementInThisLayer)) % elementInThisLayer; // Handle negative k
+      for (int rotate = 0; rotate < netRotations; ++rotate) {
+        final T topLeft = grid[top][left];
+        for (int x = left; x < right; ++x)
+          grid[top][x] = grid[top][x + 1];
+        for (int y = top; y < bottom; ++y)
+          grid[y][right] = grid[y + 1][right];
+        for (int x = right; x > left; --x)
+          grid[bottom][x] = grid[bottom][x - 1];
+        for (int y = bottom; y > top; --y)
+          grid[y][left] = grid[y - 1][left];
+        grid[top + 1][left] = topLeft;
+      }
+      // Move towards the center
+      ++top;
+      ++left;
+      --bottom;
+      --right;
+    }
+    return grid;
   }
 
   public static void main(String... args) throws FileNotFoundException {
     try (Scanner scan = new Scanner(new File(INPUT_FILE))) {
       int dataCount = Integer.parseInt(scan.nextLine(), 10);
       for (int i = 0; i < dataCount; i++, caseNum++)
-        each(scan);
+        new Trap(scan);
     } catch (FileNotFoundException e) {
       System.err.println("Could not find file: " + INPUT_FILE);
       throw e;
@@ -75,105 +91,24 @@ public class Trap {
   }
 }
 
-/**
- * Represents a 2 dimentional graph, accessed via rotation and distance instead
- * of [y][x]
- */
-class PolarGraph<T> {
-  // Index [y][x]
-  private final T[][] graph;
-  private final int width;
-  private final int height;
-
-  private Direction rotation;
-
-  public PolarGraph(T[][] graph, Direction rotation) {
-    this.graph = graph;
-    this.width = graph.length;
-    this.height = graph[0].length; // Rectangular graph
-    this.rotation = rotation;
-  }
-
-  public void clockwise() {
-    rotation = rotation.clockwise();
-  }
-
-  public void counterClockwise() {
-    rotation = rotation.counterClockwise();
-  }
-
-  // Top left is 0,0
-  public T get(Point p) {
-    int x = p.x(), y = p.y();
-    return get(x, y);
-  }
-
-  public T get(int x, int y) {
-    // Indexed from the center (left side is -width/2, top is -height/2)
-    int adjx = x - width / 2;
-    int adjy = height / 2 - y; // y should decrease upwards; but mathematically it's the opposite
-    double distance = Math.hypot(adjx, adjy);
-    int theta = (int) Math.toDegrees(Math.atan2(adjy, adjx)) + rotation.deg;
-    theta = (theta + 360) % 360;
-    Direction rotation = Direction.closest(theta);
-    if (rotation.deg != theta)
-      throw new IllegalStateException("Rotation is not a multiple of 45: " + theta + " " + rotation.deg);
-    System.out.println("get(" + x + "," + y + ") = d=" + distance + ",Θ=" + theta);
-    return get(distance, theta);
-  }
-
-  /**
-   * Returns the value at the given distance and rotation
-   *
-   * @param distance the distance from the center
-   * @param rotation the rotation from the center
-   * @return the value at the given distance and rotation
-   */
-  private T get(double distance, double rotation) {
-    int x = (int) (distance * Math.round(Math.cos(Math.toRadians(rotation))));
-    int y = (int) (distance * Math.round(Math.sin(Math.toRadians(rotation))));
-    System.out.println("adjx=" + x + ",adjy=" + y);
-    x += width / 2;
-    y = height / 2 - y; // y should decrease upwards; but mathematically it's the opposite
-    System.out.printf("Getting d=%s,Θ=%s => x=%s,y=%s at current graph rot %d\n", distance, rotation, x, y,
-        this.rotation.deg);
-    return graph[y][x];
-  }
-
-}
-
 enum Direction {
-  EAST(0, 1, 0), NORTH(90, 0, -1), WEST(180, -1, 0), SOUTH(270, 0, 1); // Order is important
+  EAST(1, 0), NORTH(0, -1), WEST(-1, 0), SOUTH(0, 1), NONE(0, 0);
 
-  final int deg;
   final int dx;
   final int dy;
 
-  Direction(int deg, int dx, int dy) {
-    this.deg = deg;
+  Direction(int dx, int dy) {
     this.dx = dx;
     this.dy = dy;
   }
 
-  public static Direction closest(int deg) {
-    // Normalize (do twice to handle negatives)
-    final int normal = ((deg % 360) + 360) % 360;
-    return Arrays.stream(values()).min((a, b) -> Integer.compare(Math.abs(a.deg - normal), Math.abs(b.deg - normal)))
-        .get();
-  }
-
-  public Direction clockwise() {
-    int nextIndex = (ordinal() + 1) % values().length;
-    return values()[nextIndex];
-  }
-
-  public Direction counterClockwise() {
-    int nextIndex = (ordinal() + values().length - 1) % values().length;
-    return values()[nextIndex];
-  }
 }
 
 record Point(int x, int y) {
+  public <T> T get(T[][] grid) {
+    return grid[y][x];
+  }
+
   public Point add(Point other) {
     return new Point(x + other.x, y + other.y);
   }
@@ -184,15 +119,9 @@ record Point(int x, int y) {
 
   // The direction from this point to the other point.
   public Direction directionTo(Point other) {
-    if (x == other.x) {
-      if (y < other.y) return Direction.NORTH; // NORTH
-      if (y > other.y) return Direction.SOUTH; // SOUTH
-    }
-    if (y == other.y) {
-      if (x < other.x) return Direction.EAST; // EAST
-      if (x > other.x) return Direction.WEST; // WEST
-    }
-    throw new IllegalStateException("Points are not on a line: " + this + " and " + other);
+    if (equals(other)) return Direction.NONE;
+    if (x == other.x) return y > other.y ? Direction.NORTH : Direction.SOUTH;
+    return x < other.x ? Direction.EAST : Direction.WEST;
   }
 }
 
@@ -206,9 +135,7 @@ enum Tile {
   }
 
   public static Tile fromChar(char ch) {
-    for (Tile tile : values()) {
-      if (tile.ch == ch) return tile;
-    }
-    throw new IllegalArgumentException("No tile for char " + ch);
+    return Arrays.stream(values()).filter(tile -> tile.ch == ch).findFirst()
+        .orElseThrow(() -> new IllegalArgumentException("Invalid tile: " + ch));
   }
 }
