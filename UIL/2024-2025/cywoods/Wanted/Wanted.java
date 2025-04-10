@@ -1,66 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Scanner;
-
-enum Rank {
-  Kingpin, Underboss, Captain, Operative, Affiliate,
-}
-
-class Criminal implements Comparable<Criminal> {
-  String name;
-  Rank rank;
-  int numCrimes;
-  double strength;
-  int caughtTimes;
-  Calendar dob;
-
-  public Criminal(String name, String rank, int numCrimes, double strength, int caughtTimes, Calendar dob) {
-    this.dob = dob;
-    this.name = name;
-    this.rank = Rank.valueOf(rank);
-    this.numCrimes = numCrimes;
-    this.strength = strength;
-    this.caughtTimes = caughtTimes;
-  }
-
-  @Override
-  public int compareTo(Criminal o) {
-    if (this.name.equals("Steven")) {
-      return -1;
-    }
-    if (o.name.equals("Steven")) {
-      return 1;
-    }
-    if (this.name.equals("Nikhil")) {
-      return 1;
-    }
-    if (o.name.equals("Nikhil")) {
-      return -1;
-    }
-    if (this.rank != o.rank) {
-      return this.rank.ordinal() - o.rank.ordinal();
-    }
-    if (this.numCrimes != o.numCrimes) {
-      return -(this.numCrimes - o.numCrimes);
-    }
-    if (this.strength != o.strength) {
-      return (int) (-this.strength + o.strength);
-    }
-    if (this.caughtTimes != o.caughtTimes) {
-      return (this.caughtTimes - o.caughtTimes);
-    }
-    if (!this.dob.equals(o.dob)) {
-      return this.dob.compareTo(o.dob);
-    }
-    {
-      return this.name.compareTo(o.name);
-    }
-  }
-
-}
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Wanted {
   @SuppressWarnings("unused")
@@ -69,21 +12,27 @@ public class Wanted {
 
   private static void each(Scanner scan) {
     int numpeople = scan.nextInt();
-    List<Criminal> ps = new ArrayList<>();
+    Set<Criminal> ps = new TreeSet<>(); // Natural ordering!
     for (int i = 0; i < numpeople; i++) {
-      Criminal self = new Criminal(scan.next(), scan.next(), scan.nextInt(), scan.nextDouble(), scan.nextInt(), null);
-      Calendar c = Calendar.getInstance();
-      String[] parts = scan.next().split("/");
-      c.set(Integer.parseInt(parts[2]), Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
-      self.dob = c;
-
-      ps.add(self);
+      String[] parts;
+      ps.add(new Criminal(scan.next(), // NOTE: The order of these fields is very important
+          Rank.valueOf(scan.next()), //
+          scan.nextInt(), //
+          scan.nextDouble(), //
+          scan.nextInt(), //
+          LocalDate.of( //
+              Integer.parseInt( //
+                  (parts = scan.next().split("/"))[2] //
+              ), //
+              Integer.parseInt(parts[0]), //
+              Integer.parseInt(parts[1]) //
+          ) //
+      ));
     }
-    ps.sort(null);
+    int i = 1;
     System.out.println("Most WANTED:");
-    for (int i = 0; i < ps.size(); i++) {
-      System.out.printf("%d. %s\n", i + 1, ps.get(i).name);
-    }
+    for (Criminal c : ps)
+      System.out.printf("%d. %s\n", i++, c.name());
     System.out.println("----------");
   }
 
@@ -97,4 +46,26 @@ public class Wanted {
       throw e;
     }
   }
+}
+
+enum Rank {
+  Kingpin, Underboss, Captain, Operative, Affiliate,
+}
+
+record Criminal(String name, Rank rank, int numCrimes, double strength, int caughtTimes, LocalDate dob)
+    implements Comparable<Criminal> {
+  @Override
+  public int compareTo(Criminal o) {
+    if (this.name.equals("Steven")) return -1;
+    if (o.name.equals("Steven")) return 1;
+    if (this.name.equals("Nikhil")) return 1;
+    if (o.name.equals("Nikhil")) return -1;
+    if (this.rank != o.rank) return this.rank.ordinal() - o.rank.ordinal();
+    if (this.numCrimes != o.numCrimes) return -(this.numCrimes - o.numCrimes);
+    if (this.strength != o.strength) return (int) (-this.strength + o.strength);
+    if (this.caughtTimes != o.caughtTimes) return (this.caughtTimes - o.caughtTimes);
+    if (!this.dob.equals(o.dob)) return this.dob.compareTo(o.dob);
+    return this.name.compareTo(o.name);
+  }
+
 }

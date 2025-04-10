@@ -8,14 +8,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
-class Node {
-  int cost;
-  List<Node> neighbors = new ArrayList<>();
 
-  public Node(int cost) {
-    this.cost = cost;
-  }
-}
 
 public class Finding {
   @SuppressWarnings("unused")
@@ -78,5 +71,12 @@ public class Finding {
       System.err.println("Could not find file: " + INPUT_FILE);
       throw e;
     }
+  }
+}class Node {
+  int cost;
+  List<Node> neighbors = new ArrayList<>();
+
+  public Node(int cost) {
+    this.cost = cost;
   }
 }

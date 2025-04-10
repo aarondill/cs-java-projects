@@ -4,22 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-class Criminal implements Comparable<Criminal> {
-  String name;
-  int years;
-
-  public Criminal(String name, int years) {
-    this.name = name;
-    this.years = years;
-  }
-
-  @Override
-  public int compareTo(Criminal o) {
-    return name.compareTo(o.name);
-  }
-
-}
-
 public class Sentences {
   @SuppressWarnings("unused")
   private static int caseNum = 1;
@@ -38,20 +22,18 @@ public class Sentences {
     List<Criminal> personsss = new ArrayList<>();
     for (int i = 0; i < numpeople; i++) {
       String name = scan.next();
-      Criminal self = new Criminal(name, 0);
-      personsss.add(self);
-      for (int j = 0; j < crimes.size(); j++) {
-        int time = scan.nextInt() * crimes.get(j);
-        self.years += time;
-      }
+      int years = 0;
+      for (int crime : crimes)
+        years += scan.nextInt() * crime;
+      personsss.add(new Criminal(name, years));
     }
     personsss.sort(null);
     for (Criminal crim : personsss) {
-      if (crim.years == 1) {
-        System.out.println(crim.name + " will serve " + crim.years + " year!");
-      } else if (crim.years != 0) {
-        System.out.println(crim.name + " will serve " + crim.years + " years!");
-      } else System.out.println(crim.name + " is innocent.");
+      if (crim.years() == 1) {
+        System.out.println(crim.name() + " will serve " + crim.years() + " year!");
+      } else if (crim.years() != 0) {
+        System.out.println(crim.name() + " will serve " + crim.years() + " years!");
+      } else System.out.println(crim.name() + " is innocent.");
     }
     System.out.println();
 
@@ -66,5 +48,11 @@ public class Sentences {
       System.err.println("Could not find file: " + INPUT_FILE);
       throw e;
     }
+  }
+}
+
+record Criminal(String name, int years) implements Comparable<Criminal> {
+  public int compareTo(Criminal o) {
+    return name.compareTo(o.name);
   }
 }

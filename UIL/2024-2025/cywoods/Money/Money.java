@@ -5,20 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-class Rober implements Comparable<Rober> {
-  int money;
-  String name;
-
-  public Rober(int money, String name) {
-    this.money = money;
-    this.name = name;
-  }
-
-  public int compareTo(Rober r) {
-    return r.money - money;
-  }
-}
-
 public class Money {
   @SuppressWarnings("unused")
   private static int caseNum = 1;
@@ -36,13 +22,11 @@ public class Money {
       rs.add(new Rober(money, name));
     }
     Collections.sort(rs);
-    if (rs.size() > 1 && rs.get(0).money == rs.get(1).money) {
+    if (rs.size() > 1 && rs.get(0).money() == rs.get(1).money()) {
       System.out.println("Multiple suspects stole the most money.");
     } else {
-      System.out.println(rs.get(0).name + " has stolen the most money!");
+      System.out.println(rs.get(0).name() + " has stolen the most money!");
     }
-
-    // Handle output:
   }
 
   public static void main(String... args) throws FileNotFoundException {
@@ -52,5 +36,11 @@ public class Money {
       System.err.println("Could not find file: " + INPUT_FILE);
       throw e;
     }
+  }
+}
+
+record Rober(int money, String name) implements Comparable<Rober> {
+  public int compareTo(Rober r) {
+    return r.money - money;
   }
 }
