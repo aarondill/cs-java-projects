@@ -1,6 +1,9 @@
+import static java.util.function.Predicate.not;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -42,30 +45,26 @@ public class Varsha {
     }
 
     int max = 0;
+    Set<Point> visited = new HashSet<>(); // used to avoid visiting the same point twice
     for (int zi = 0; zi < z; zi++) {
       for (int yi = 0; yi < y; yi++) {
         for (int xi = 0; xi < x; xi++) {
-          max = Math.max(max, maxVein(new Point(xi, yi, zi), grid, 0, new HashSet<>()));
+          max = Math.max(max, maxVein(new Point(xi, yi, zi), grid, visited));
         }
       }
     }
     System.out.println(max);
   }
 
-  public static int maxVein(Point p, List<List<List<Boolean>>> grid, int count, Set<Point> visited) {
+  public static int maxVein(Point p, List<List<List<Boolean>>> grid, Set<Point> visited) {
+    if (!p.get(grid)) return 0;
     visited.add(p);
-    int ret = 1;
-    for (Direction d : Direction.values()) {
-      Point i = p.add(d);
-      if (i.z() < 0 || i.x() < 0 || i.y() < 0) continue;
-      if (i.z() >= grid.size() || i.y() >= grid.get(i.z()).size() || i.x() >= grid.get(i.z()).get(i.y()).size())
-        continue;
-
-      if (!grid.get(i.z()).get(i.y()).get(i.x())) continue;
-      ret += maxVein(i, grid, count + 1, visited);
-    }
-    return ret;
-
+    int x = grid.size(), y = grid.get(0).size(), z = grid.get(0).get(0).size();
+    // This point counts as 1
+    return 1 + Arrays.stream(Direction.values()).map(p::add).filter(i -> i.valid(x, y, z)) // valid
+        .filter(i -> i.get(grid)) // is ore
+        .filter(not(visited::contains)) // already found this
+        .mapToInt(i -> maxVein(i, grid, visited)).sum();
   }
 
   public static void main(String... args) throws FileNotFoundException {
@@ -85,6 +84,13 @@ record Point(int x, int y, int z) {
     return new Point(x + d.x, y + d.y, z + d.z);
   }
 
+  public boolean valid(int z, int y, int x) {
+    return this.z >= 0 && this.y >= 0 && this.x >= 0 && this.z < z && this.y < y && this.x < x;
+  }
+
+  public <T> T get(List<List<List<T>>> grid) {
+    return grid.get(z).get(y).get(x);
+  }
 }
 
 enum Direction {
