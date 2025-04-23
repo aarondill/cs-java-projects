@@ -1,6 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Bethany {
   @SuppressWarnings("unused")
@@ -9,7 +15,23 @@ public class Bethany {
 
   // The constructor is called on each case
   private Bethany(Scanner scan) {
-    throw new UnsupportedOperationException("Not Attempted"); /* TODO: Delete this line */
+    int numOutputs = scan.nextInt();
+    int numFactorsNeed = scan.nextInt();
+    scan.nextLine();
+    System.out.println(Stream.iterate(1, i -> i + 1) //
+        .filter(i -> numFactors(i) == numFactorsNeed) //
+        .limit(numOutputs) //
+        .map(Object::toString) //
+        .collect(Collectors.joining(" ")));
+  }
+
+  static Map<Integer, Long> numFactors = new HashMap<>(Map.of(1, 1l));
+
+  static long numFactors(int i) {
+    return numFactors.computeIfAbsent(i, _i -> {
+      // Include both 1 and i in the factors
+      return IntStream.rangeClosed(1, i).filter(j -> i % j == 0).count();
+    });
   }
 
   public static void main(String... args) throws FileNotFoundException {
