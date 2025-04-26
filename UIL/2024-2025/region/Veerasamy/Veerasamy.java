@@ -12,7 +12,7 @@ public class Veerasamy {
   // The constructor is called on each case
   private Veerasamy(Scanner scan) {
     int numP = scan.nextInt();
-    String conv = scan.next();
+    /* String conv = */ scan.next();
     scan.nextLine();
     double[] xPoint = new double[numP], yPoint = new double[numP];
     for (int i = 0; i < numP; i++) {
@@ -32,6 +32,9 @@ public class Veerasamy {
 
     Area a = new Area(p);
     boolean cont = a.contains(xCheck, yCheck);
+    // Does this work? If the shape is on the top/right of the rectangle, these two check should make it work.
+    if (!cont) cont = a.contains(xCheck - 0.00001, yCheck - 0.00001);
+
     if (cont) System.out.println("Safe and sound.");
     else System.out.println("Dreaded dimensional downgrade!");
   }
