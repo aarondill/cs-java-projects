@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 
 public class Veerasamy {
   @SuppressWarnings("unused")
@@ -9,7 +11,29 @@ public class Veerasamy {
 
   // The constructor is called on each case
   private Veerasamy(Scanner scan) {
-    throw new UnsupportedOperationException("Not Attempted"); /* TODO: Delete this line */
+    int numP = scan.nextInt();
+    String conv = scan.next();
+    scan.nextLine();
+    double[] xPoint = new double[numP], yPoint = new double[numP];
+    for (int i = 0; i < numP; i++) {
+      xPoint[i] = scan.nextDouble();
+      yPoint[i] = scan.nextDouble();
+      scan.nextLine();
+    }
+    double xCheck = scan.nextDouble(), yCheck = scan.nextDouble();
+    scan.nextLine();
+
+    Path2D p = new Path2D.Double();
+    p.moveTo(xPoint[0], yPoint[0]);
+    for (int i = 1; i < numP; i++) {
+      p.lineTo(xPoint[i], yPoint[i]);
+    }
+    p.closePath();
+
+    Area a = new Area(p);
+    boolean cont = a.contains(xCheck, yCheck);
+    if (cont) System.out.println("Safe and sound.");
+    else System.out.println("Dreaded dimensional downgrade!");
   }
 
   public static void main(String... args) throws FileNotFoundException {
