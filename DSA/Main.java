@@ -25,7 +25,7 @@ public class Main {
     public String toString() {
       // Dallas -> Houston. Time: 51 Cost: 101.00
       var path = String.join(" -> ", cities.toArray(new String[0]));
-      return "%s. Time: %d. Cost: %d.00.".formatted(path, price, duration);
+      return "%s. Time: %d. Cost: %d.00.".formatted(path, duration, price);
     }
     public int compareTo(Path o) {
       return switch (source.sortBy) {
@@ -42,7 +42,7 @@ public class Main {
     // Construct graph from input
     Graph g;
     try (var in = new Scanner(new File("./flights.dat"))) {
-      g = parseFlights(in.nextLong(), in);
+      g = parseFlights(Long.parseLong(in.nextLine()), in);
     } catch (FileNotFoundException e) {
       System.err.println(e);
       System.exit(2);
@@ -52,7 +52,7 @@ public class Main {
     // parse the request input
     List<Request> requests;
     try (var in = new Scanner(new File("./requests.dat"))) {
-      requests = parseRequests(in.nextLong(), in);
+      requests = parseRequests(Long.parseLong(in.nextLine()), in);
     } catch (FileNotFoundException e) {
       System.err.println(e);
       System.exit(2);
@@ -61,9 +61,10 @@ public class Main {
 
     // process each request
     int flight_num = 1;
-    for (Request r : requests) {
+    for (var it = requests.iterator(); it.hasNext();) {
+      Request r = it.next();
       // Flight 1: Dallas, Houston (Time)
-      System.out.printf("Flight %d: %s, %s (%s)", flight_num++, r.from, r.to, switch (r.sortBy) {
+      System.out.printf("Flight %d: %s, %s (%s)\n", flight_num++, r.from, r.to, switch (r.sortBy) {
         case Price -> "Cost";
         case Duration -> "Time";
       });
@@ -74,9 +75,11 @@ public class Main {
       paths = Heap.heapsort(paths);
 
       // Output the paths
-      for (int i = 0; i < NUMBER_OUTPUT; i++)
-        // Path 1: Dallas -> Houston. Time: 51 Cost: 101.00
-        System.out.printf("Path %d: %s", i + 1, paths.get(i));
+      // Path 1: Dallas -> Houston. Time: 51 Cost: 101.00
+      for (int i = 0; i < Math.min(NUMBER_OUTPUT, paths.size()); i++)
+        System.out.printf("Path %d: %s\n", i + 1, paths.get(i));
+
+      if (it.hasNext()) System.out.println(); // seperator line
     }
   }
 
@@ -84,7 +87,7 @@ public class Main {
     Graph g = new Graph();
     while (n-- > 0) {
       String line = in.nextLine();
-      String[] parts = line.split("|");
+      String[] parts = line.split("\\|");
       String a = parts[0], b = parts[1];
       int price = Integer.parseInt(parts[2]), duration = Integer.parseInt(parts[3]);
       g.connect(a, b, price, duration);
@@ -95,7 +98,7 @@ public class Main {
     List<Request> ret = new ArrayList<>();
     while (n-- > 0) {
       String line = in.nextLine();
-      String[] parts = line.split("|");
+      String[] parts = line.split("\\|");
       String from = parts[0], to = parts[1];
       ret.add(new Request(from, to, switch (parts[2]) {
         case "T" -> SortType.Duration;
@@ -116,7 +119,10 @@ public class Main {
       Path currentPath = queue.poll();
       var visited = currentPath.cities();
       String c = visited.getLast();
-      if (c == end) ret.add(currentPath);
+      if (c.equals(end)) {
+        ret.add(currentPath);
+        continue; // we've reached the end city :)
+      }
 
       for (var edge : g.getAdjecent(c)) {
         // NOTE: visited can't be function-local because we need to see *all* possible paths, not just the shortest!

@@ -21,9 +21,9 @@ public class Graph {
     var bList = adjecencyList.computeIfAbsent(b, _ -> new ArrayList<>());
 
     // Check that none of the edges in A's list have b already
-    if (aList.stream().anyMatch(e -> e.to == b))
+    if (aList.stream().anyMatch(e -> e.to.equals(b)))
       throw new IllegalArgumentException("%s and %s are already connected!".formatted(a, b));
-    assert !bList.stream().anyMatch(e -> e.to == a); // if not in a, shouldn't be in b
+    assert !bList.stream().anyMatch(e -> e.to.equals(a)); // if not in a, shouldn't be in b
 
     // connect a->b and b->a
     aList.add(new Edge(b, price, duration));
