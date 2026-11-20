@@ -1,5 +1,16 @@
-4
+15
 Dallas|Austin|98|47
 Austin|Houston|95|39
 Dallas|Houston|101|51
 Austin|Chicago|144|192
+Dallas|Chicago|93|46
+Houston|Chicago|132|60
+Dallas|Denver|150|120
+Houston|Denver|200|130
+Austin|Denver|650|86
+Chicago|Denver|183|72
+Denver|Atlanta|93|93
+Dallas|Atlanta|100|106
+Houston|Atlanta|50|63
+Austin|Atlanta|16|30
+Chicago|Atlanta|30|45
