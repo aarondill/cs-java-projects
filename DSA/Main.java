@@ -72,7 +72,7 @@ public class Main {
       // DO BFS
       var paths = bfs(g, r);
       // Sort all paths
-      paths = Heap.heapsort(paths);
+      heapsort(paths);
 
       // Output the paths
       // Path 1: Dallas -> Houston. Time: 51 Cost: 101.00
@@ -107,6 +107,14 @@ public class Main {
       }));
     }
     return ret;
+  }
+
+  /** Sorts the list in-place using a Heap */
+  public static <T extends Comparable<T>> void heapsort(List<T> list) {
+    Heap<T> h = new Heap<>(list);
+    for (int i = list.size() - 1; i >= 0; i--) { // backwards loop!
+      list.set(i, h.removeMin());
+    }
   }
 
   static List<Path> bfs(Graph g, Request r) {
